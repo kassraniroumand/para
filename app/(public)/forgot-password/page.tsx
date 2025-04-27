@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { requestPasswordReset } from "@/app/utils/auth-utils";
 import Link from "next/link";
-import "../login/login.css";
+
 
 export default function ForgotPasswordPage() {
   const router = useRouter();

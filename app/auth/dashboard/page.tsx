@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth } from '@/app/auth/auth-provider';
-import { UserProfile } from '@/app/components/auth/user-profile';
 
 export default function AuthDashboardPage() {
   const { user } = useAuth();
@@ -19,7 +18,7 @@ export default function AuthDashboardPage() {
 
         <div className="dashboard-user-info">
           <h3>Your Profile</h3>
-          <UserProfile />
+          {/*<UserProfile />*/}
         </div>
 
         <div className="dashboard-links">

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { confirmSignUpUser } from "@/app/utils/auth-utils";
 import Link from "next/link";
-import "../login/login.css";
+
 
 export default function ConfirmSignupPage() {
   const router = useRouter();

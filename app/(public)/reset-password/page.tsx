@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { confirmPasswordReset } from "@/app/utils/auth-utils";
 import Link from "next/link";
-import "../login/login.css";
+// import "../login/login.css";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
