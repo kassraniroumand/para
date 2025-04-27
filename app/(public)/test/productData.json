@@ -1,0 +1,79 @@
+{
+  "id": 858,
+  "name": "h",
+  "options": [
+    {
+      "id": 825,
+      "name": "Color",
+      "required": false,
+      "values": [
+        {
+          "id": 756,
+          "value": "Red"
+        },
+        {
+          "id": 133,
+          "value": "Blue"
+        }
+      ],
+      "subOptions": [
+        {
+          "id": 646,
+          "name": "Materiial",
+          "required": false,
+          "triggerValue": {
+            "id": 756,
+            "value": "Red"
+          },
+          "values": [
+            {
+              "id": 66,
+              "value": "Wood"
+            },
+            {
+              "id": 410,
+              "value": "Leather"
+            }
+          ],
+          "subOptions": [
+            {
+              "id": 135,
+              "name": "Size",
+              "required": false,
+              "triggerValue": {
+                "id": 66,
+                "value": "Wood"
+              },
+              "values": [
+                {
+                  "id": 111,
+                  "value": "SM",
+                  "priceAdjustment": 2
+                }
+              ],
+              "subOptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "id": 567,
+      "sku": "jkkh",
+      "basePrice": 0,
+      "image": "https://google.com",
+      "selectedValues": [
+        {
+          "id": 111,
+          "value": "SM"
+        },
+        {
+          "id": 66,
+          "value": "Wood"
+        }
+      ]
+    }
+  ]
+}

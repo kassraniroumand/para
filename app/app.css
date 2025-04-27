@@ -3,18 +3,24 @@ body {
     background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
     display: flex;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     justify-content: center;
-    align-items: center;
+    padding: 2rem 0;
   }
-  
+
+  .app-container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
   main {
     display: flex;
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -34,7 +40,7 @@ body {
   button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
   }
-  
+
   ul {
     padding-inline-start: 0;
     margin-block-start: 0;
@@ -49,17 +55,428 @@ body {
     border-radius: 8px;
     overflow: auto;
   }
-  
+
   li {
     background-color: white;
     padding: 8px;
   }
-  
+
   li:hover {
     background: #dadbf9;
   }
-  
+
   a {
     font-weight: 800;
     text-decoration: none;
+  }
+
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .navigation {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    color: #4f46e5;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(79, 70, 229, 0.1);
+  }
+
+  .profile-toggle-button {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+
+  .profile-toggle-button:hover {
+    background-color: #4338ca;
+  }
+
+  .todo-container {
+    margin: 2rem 0;
+  }
+
+  .new-todo-button {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+
+  .new-todo-button:hover {
+    background-color: #059669;
+  }
+
+  .todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .todo-item {
+    padding: 0.75rem;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border-left: 3px solid #10b981;
+  }
+
+  .app-info {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f0fdf4;
+    border-radius: 6px;
+    border: 1px solid #dcfce7;
+    color: #166534;
+    font-size: 0.875rem;
+  }
+
+  .app-info a {
+    color: #059669;
+    text-decoration: underline;
+  }
+
+  .app-info a:hover {
+    color: #047857;
+  }
+
+  /* Page Styles */
+  .page-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    margin: 0;
+    color: #1f2937;
+  }
+
+  .back-link {
+    color: #4f46e5;
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Dashboard Styles */
+  .dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .welcome-card {
+    background-color: #f0f9ff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .welcome-card h2 {
+    margin-top: 0;
+    color: #1e3a8a;
+  }
+
+  .dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .stat-card h3 {
+    margin-top: 0;
+    color: #4b5563;
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0.5rem 0;
+  }
+
+  .recent-activity {
+    margin-top: 1rem;
+  }
+
+  .recent-activity h3 {
+    color: #4b5563;
+    margin-bottom: 1rem;
+  }
+
+  .activity-list {
+    background: none;
+    border: none;
+    gap: 0.5rem;
+  }
+
+  .activity-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 3px solid #6366f1;
+  }
+
+  .activity-time {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+  }
+
+  .activity-description {
+    color: #1f2937;
+  }
+
+  /* Settings Styles */
+  .settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .settings-section {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+  }
+
+  .settings-section h2 {
+    margin-top: 0;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .setting-item:last-child {
+    border-bottom: none;
+  }
+
+  .setting-label h3 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 1rem;
+  }
+
+  .setting-label p {
+    margin: 0.25rem 0 0 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e5e7eb;
+    transition: .4s;
+    border-radius: 24px;
+  }
+
+  .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .toggle-slider {
+    background-color: #3b82f6;
+  }
+
+  input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+  }
+
+  .language-select {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    min-width: 150px;
+  }
+
+  .settings-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .save-settings-button {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .save-settings-button:hover {
+    background-color: #2563eb;
+  }
+
+  .save-settings-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+  }
+
+  .settings-saved-message {
+    color: #059669;
+    font-size: 0.875rem;
+  }
+
+  .danger-zone {
+    border-color: #fee2e2;
+  }
+
+  .danger-zone h2 {
+    color: #b91c1c;
+    border-color: #fee2e2;
+  }
+
+  .sign-out-button {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .sign-out-button:hover {
+    background-color: #dc2626;
+  }
+
+  .header-title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-greeting {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+
+  .retry-button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .user-section {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+  }
+
+  .user-section h2 {
+    margin-top: 0;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .user-card {
+    background-color: #f9fafb;
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 3px solid #3b82f6;
   }
