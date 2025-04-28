@@ -4,6 +4,7 @@
 import { useRef } from "react"
 import Image from "next/image"
 import { useScroll, useTransform, motion } from "framer-motion"
+import {useMediaQuery} from "react-responsive";
 
 const projects = [
     {
@@ -17,7 +18,7 @@ const projects = [
     {
         title: "Clément Chapillon",
         description:
-            "This is a story on the border between reality and imaginary, about the contradictory feelings that the insularity of a rocky, arid, and wild territory provokes - so French photographer Clément Chapillon describes his latest highly captivating project Les rochers fauves.",
+            "This is a story on the border between reality and imaginary, about the contradictory",
         src: "tree.jpg",
         link: "https://www.ignant.com/2022/09/30/clement-chapillon-questions-geographical-and-mental-isolation-with-les-rochers-fauves/",
         color: "#977F6D",
@@ -44,6 +45,9 @@ interface CardProps {
 
 // Also update the Card component to fix positioning issues
 const Card = ({ title, description, src, link, color, i, headerText }: CardProps) => {
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 1224px)'
+    })
     const container = useRef(null)
     const { scrollYProgress } = useScroll({
         target: container,
@@ -52,9 +56,9 @@ const Card = ({ title, description, src, link, color, i, headerText }: CardProps
     const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1])
 
     return (
-        <div ref={container} className="h-[80vh] flex items-start justify-center sticky" style={{ top: `${15 + i * 5}vh` }}>
+        <div ref={container} className="h-vh sm:h-svh flex items-start justify-center sticky " style={{ top: `${isDesktopOrLaptop ? 15 + i * 5 : i }vh` }}>
             <div
-                className="flex flex-col relative h-auto md:h-[500px] w-[90vw] md:w-[80vw] max-w-[1000px] rounded-[25px] p-[20px] md:p-[50px] shadow-lg"
+                className="flex flex-col relative h-vh md:h-[500px] w-[90vw] md:w-[80vw] max-w-[1000px] rounded-[25px] p-[20px] md:p-[50px] shadow-lg"
                 style={{ backgroundColor: color }}
             >
                 <h2 className="text-center m-0 text-[28px] font-bold">{title}</h2>
@@ -138,7 +142,7 @@ const Example1 = () => {
                 </div>
 
                 {/* Projects Section - This is the container for all cards */}
-                <div className="w-full lg:w-2/3 relative">
+                <div className="w-full lg:w-2/3 relative py-10">
                     {/* This div is the actual scrollable container */}
                     <div ref={container} className="relative">
                         {projects.map((project, i) => (
