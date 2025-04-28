@@ -37,6 +37,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { login } = useAuth();
+  const { user, isAdmin, isLoading } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,6 +53,8 @@ export default function LoginPage() {
 
     try {
       const result = await login(values.email, values.password);
+      console.log("isAdmin", isAdmin)
+      console.log("result", result);
 
       if (result) {
         // Redirect to dashboard or home page

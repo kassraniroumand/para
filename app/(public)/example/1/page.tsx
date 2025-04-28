@@ -46,7 +46,7 @@ interface CardProps {
 // Also update the Card component to fix positioning issues
 const Card = ({ title, description, src, link, color, i, headerText }: CardProps) => {
     const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 1224px)'
+        query: '(min-width: 728px)'
     })
     const container = useRef(null)
     const { scrollYProgress } = useScroll({
@@ -56,9 +56,10 @@ const Card = ({ title, description, src, link, color, i, headerText }: CardProps
     const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1])
 
     return (
-        <div ref={container} className="h-vh sm:h-svh flex items-start justify-center sticky " style={{ top: `${isDesktopOrLaptop ? 15 + i * 5 : i }vh` }}>
+        <div ref={container} className="h-vh sm:h-svh flex items-start justify-center sticky "  style={{ top: isDesktopOrLaptop ? `10vh` : `0vh` }}
+        >
             <div
-                className="flex flex-col relative h-vh md:h-[500px] w-[90vw] md:w-[80vw] max-w-[1000px] rounded-[25px] p-[20px] md:p-[50px] shadow-lg"
+                className="flex flex-col relative  h-[90svh] mb-4 md:h-[500px] w-[90vw] md:w-[80vw] max-w-[1000px] rounded-[25px] p-[20px] md:p-[50px] shadow-lg"
                 style={{ backgroundColor: color }}
             >
                 <h2 className="text-center m-0 text-[28px] font-bold">{title}</h2>
