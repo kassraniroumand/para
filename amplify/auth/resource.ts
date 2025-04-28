@@ -15,9 +15,5 @@ export const auth = defineAuth({
       required: true,
       mutable: true,
     }
-  },
-  // Configure access for admin users
-  multifactor: {
-    optional: false, // We want MFA for admin users
-  },
+  }
 });
