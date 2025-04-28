@@ -14,13 +14,7 @@ export const auth = defineAuth({
     email: {
       required: true,
       mutable: true,
-    },
-    // Custom attributes for role-based access control
-    role: {
-      required: false,
-      mutable: true,
-      type: "String",
-    },
+    }
   },
   // Configure access for admin users
   multifactor: {
