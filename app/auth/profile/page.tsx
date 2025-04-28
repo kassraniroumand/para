@@ -45,7 +45,6 @@ export default function AuthProfilePage() {
         setLoading(false);
       }
     };
-
     fetchProfileData();
   }, []);
 
@@ -53,16 +52,16 @@ export default function AuthProfilePage() {
     try {
       setLoading(true);
       // Update the profile data via API
-      await apiPost<ProfileData>('users/profile', {
-        username: displayName,
-        email: email
-      });
-
-      // Refresh profile data after successful update
-      const updatedData = await apiGet<ProfileData>('users/profile');
-      setProfileData(updatedData);
-
-      setIsEditing(false);
+      // await <ProfileData>('users/profile', {
+      //   username: displayName,
+      //   email: email
+      // });
+      //
+      // // Refresh profile data after successful update
+      // const updatedData = await apiGet<ProfileData>('users/profile');
+      // setProfileData(updatedData);
+      //
+      // setIsEditing(false);
       setError('');
     } catch (err) {
       console.error('Error updating profile:', err);

@@ -20,7 +20,7 @@ export default function AuthLayout({
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !isLoginPage) {
       // Redirect to login page with the current path for redirecting back after login
-      const encodedRedirect = encodeURIComponent(pathname);
+      const encodedRedirect = encodeURIComponent(pathname || '/login');
       router.push(`/login?redirect=${encodedRedirect}`);
     }
   }, [isAuthenticated, isLoading, router, isLoginPage, pathname]);

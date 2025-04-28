@@ -1,4 +1,3 @@
-import { ProductConfigCreator } from "@/components/custom/ProductConfigCreator"
 import { Toaster } from "sonner"
 
 export default function ProductCreatorPage() {
@@ -8,7 +7,7 @@ export default function ProductCreatorPage() {
       <p className="text-center text-muted-foreground mb-8">
         Create a configurable product with custom options, sub-options, and variants
       </p>
-      <ProductConfigCreator />
+      {/*<ProductConfigCreator />*/}
       <Toaster richColors position="top-right" />
     </div>
   )

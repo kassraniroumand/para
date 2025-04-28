@@ -5,7 +5,7 @@ import { useRef } from "react"
 import Image from "next/image"
 import { useScroll, useTransform, motion } from "framer-motion"
 
-export const projects = [
+const projects = [
     {
         title: "Matthias Leidinger",
         description:

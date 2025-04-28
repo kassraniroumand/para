@@ -26,11 +26,11 @@ export default function ForgotPasswordPage() {
         // Redirect to reset password page
         router.push(`/reset-password?email=${encodeURIComponent(email)}`);
       } else {
-        setError(result.error?.message || "Password reset request failed. Please try again.");
+        // setError(result.error?.message || "Password reset request failed. Please try again.");
       }
     } catch (err: any) {
       console.error("Password reset error:", err);
-      setError(err.message || "An error occurred during the password reset request. Please try again.");
+      // setError(err.message || "An error occurred during the password reset request. Please try again.");
     } finally {
       setLoading(false);
     }
