@@ -1,4 +1,7 @@
-export default function Home() {
+import {HomepageData} from "@/types/homepage";
+import Image from "next/image";
+
+export default function Home({data}: {data: HomepageData['homepage']['hero']}) {
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center bg-white">
       <section className="container px-6 py-16 mx-auto text-center">
@@ -46,34 +49,35 @@ export default function Home() {
 
           {/* Mobile: 2x2 grid */}
           <div className="grid grid-cols-2 gap-x-12 gap-y-8 md:hidden">
-            <div className="opacity-40">
-              <img src="/placeholder.svg?height=40&width=120" alt="Land-book" width={120} height={40} />
-            </div>
-            <div className="opacity-40">
-              <img src="/placeholder.svg?height=40&width=120" alt="Product Hunt" width={120} height={40} />
-            </div>
-            <div className="opacity-40">
-              <img src="/placeholder.svg?height=40&width=120" alt="awwwards" width={120} height={40} />
-            </div>
-            <div className="opacity-40">
-              <img src="/placeholder.svg?height=40&width=120" alt="DESIGNMUNK" width={120} height={40} />
-            </div>
+            {data?.as_seen_on.brands.map((brand) => (
+                <div className="opacity-40">
+                  <h1>{brand['title']}</h1>
+                  <Image src={brand['image']} width={120} height={50} alt={"fdas"}/>
+                  {/*<img src="/placeholder.svg?height=40&width=120" alt="Land-book" width={120} height={40} />*/}
+                </div>
+            ))}
+            {/*<div className="opacity-40">*/}
+            {/*  <img src="/placeholder.svg?height=40&width=120" alt="Land-book" width={120} height={40} />*/}
+            {/*</div>*/}
+            {/*<div className="opacity-40">*/}
+            {/*  <img src="/placeholder.svg?height=40&width=120" alt="Product Hunt" width={120} height={40} />*/}
+            {/*</div>*/}
+            {/*<div className="opacity-40">*/}
+            {/*  <img src="/placeholder.svg?height=40&width=120" alt="awwwards" width={120} height={40} />*/}
+            {/*</div>*/}
+            {/*<div className="opacity-40">*/}
+            {/*  <img src="/placeholder.svg?height=40&width=120" alt="DESIGNMUNK" width={120} height={40} />*/}
+            {/*</div>*/}
           </div>
 
           {/* Desktop: Row */}
           <div className="hidden md:flex flex-wrap justify-center items-center gap-12">
-            <div className="opacity-70 hover:opacity-100 transition-opacity">
-              <img src="/placeholder.svg?height=40&width=120" alt="Land-book" width={120} height={40} />
-            </div>
-            <div className="opacity-70 hover:opacity-100 transition-opacity">
-              <img src="/placeholder.svg?height=40&width=120" alt="Product Hunt" width={120} height={40} />
-            </div>
-            <div className="opacity-70 hover:opacity-100 transition-opacity">
-              <img src="/placeholder.svg?height=40&width=120" alt="awwwards" width={120} height={40} />
-            </div>
-            <div className="opacity-70 hover:opacity-100 transition-opacity">
-              <img src="/placeholder.svg?height=40&width=120" alt="DESIGNMUNK" width={120} height={40} />
-            </div>
+            {data?.as_seen_on.brands.map((brand) => (
+                <div className="opacity-70 hover:opacity-100 transition-opacity">
+                  <h1>{brand['title']}</h1>
+                  <Image src={brand['image']} width={120} height={40} alt={"fdas"}/>
+                </div>
+            ))}
           </div>
         </div>
       </section>

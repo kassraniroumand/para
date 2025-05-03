@@ -58,7 +58,7 @@ export default function LoginPage() {
 
       if (result) {
         // Redirect to dashboard or home page
-        router.push("/");
+        router.push(isAdmin ? "/auth/admin" : "/login");
       } else {
         setError("Invalid email or password. Please try again.");
       }

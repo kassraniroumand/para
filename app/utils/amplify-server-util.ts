@@ -15,7 +15,6 @@ export const fetchSessionFromServer = async () => {
         nextServerContext: { cookies },
         operation: (contextSpec) => fetchAuthSession(contextSpec),
     });
-    console.log("currentSession", currentSession);
     return currentSession;
 };
 

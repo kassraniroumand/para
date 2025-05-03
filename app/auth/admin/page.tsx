@@ -3,6 +3,7 @@
 import { useAuth } from '@/app/auth/auth-provider';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Link from "next/link";
 
 export default function AuthAdminPage() {
   const { user, isAdmin, isLoading } = useAuth();
@@ -29,6 +30,10 @@ export default function AuthAdminPage() {
     <div className="auth-admin-page">
       <h1>Admin Control Panel</h1>
       <p>Welcome, {user?.username}. This page is only accessible to administrators.</p>
+
+      <Link href={"/auth/form"}>
+        Form
+      </Link>
 
       <div className="admin-dashboard">
         <div className="admin-section">

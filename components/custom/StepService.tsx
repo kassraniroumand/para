@@ -1,8 +1,10 @@
 import { PhoneCall, FileSearch, RocketIcon } from "lucide-react";
+import {HomepageData} from "@/types/homepage";
+import React from "react";
 
 interface StepProps {
-  title: string;
-  description: string;
+  title: string | undefined;
+  description: string | undefined;
   icon: React.ReactNode;
 }
 
@@ -34,24 +36,32 @@ const STEPS_DATA = [
   }
 ];
 
-const StepService = () => {
+const StepService = ({data}: {data: HomepageData['homepage']['framework']}) => {
   return (
     <div className='container mx-auto flex flex-col gap-24 py-10'>
       <div className='flex flex-col gap-4 text-center'>
-        <span className='text-blue-800 text-xl md:text-2xl font-bold'>Proven Framework</span>
-        <h2 className='text-3xl sm:text-5xl md:text-7xl font-medium'>Our 3-Step Winning Framework</h2>
+        <span className='text-blue-800 text-xl md:text-2xl font-bold'>{data.sectionTitle}</span>
+        <h2 className='text-3xl sm:text-5xl md:text-7xl font-medium'>{data.sectionSubtitle}</h2>
         <p className='text-gray-600 max-w-2xl mx-auto'>A Simple 3-Step Process to Get Things Done</p>
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6'>
-        {STEPS_DATA.map((step, index) => (
-          <StepServiceStep
-            key={index}
-            icon={step.icon}
-            title={step.title}
-            description={step.description}
-          />
-        ))}
+          {data.steps.map((step, i) => (
+              <StepServiceStep
+                  key={i}
+                  icon={step.icon}
+                  title={step.title}
+                  description={step.description}
+              />
+          ))}
+        {/*{STEPS_DATA.map((step, index) => (*/}
+        {/*  <StepServiceStep*/}
+        {/*    key={index}*/}
+        {/*    icon={step.icon}*/}
+        {/*    title={step.title}*/}
+        {/*    description={step.description}*/}
+        {/*  />*/}
+        {/*))}*/}
       </div>
     </div>
   );

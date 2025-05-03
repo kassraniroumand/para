@@ -1,34 +1,40 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type {Metadata} from "next";
+import {Inter} from "next/font/google";
 import "./globals.css";
-import { AmplifyConfigProvider } from "@/app/auth/amplify-config";
-import { AuthProvider } from "@/app/auth/auth-provider";
+import {AmplifyConfigProvider} from "@/app/auth/amplify-config";
+import {AuthProvider} from "@/app/auth/auth-provider";
 import NavBar from "@/components/custom/NavBar";
+import ReactQueryProvider from "@/app/hooks/ReactQueryProvider";
+import React from "react";
+import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-  title: "Amplify Auth Demo",
-  description: "Next.js app with AWS Amplify Authentication",
+    title: "Amplify Auth Demo",
+    description: "Next.js app with AWS Amplify Authentication",
 };
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
+                                       children,
+                                   }: {
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AmplifyConfigProvider>
-          <AuthProvider>
-            {/*<NavBar />*/}
-            <div>
-              {children}
-            </div>
-          </AuthProvider>
-        </AmplifyConfigProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+        <body className={inter.className}>
+        <ReactQueryProvider>
+            <AmplifyConfigProvider>
+                <AuthProvider>
+                    {/*<NavBar />*/}
+                    <div>
+                        {children}
+                    </div>
+                </AuthProvider>
+            </AmplifyConfigProvider>
+        </ReactQueryProvider>
+        <Toaster position="top-right" />
+        </body>
+        </html>
+    );
 }
