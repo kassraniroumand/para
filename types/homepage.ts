@@ -1,4 +1,4 @@
-export interface HomepageData {
+export type HomepageData =  {
   homepage: {
     hero: {
       header: string;

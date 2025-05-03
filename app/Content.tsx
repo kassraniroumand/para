@@ -6,41 +6,48 @@ import SubHeaderBanner from "@/components/custom/SubHeader";
 import StepService from "@/components/custom/StepService";
 // import Example1 from "@/app/(public)/example/1/page";
 import Example2 from "@/app/(public)/example/2/page";
-import React from "react";
+import React, {useEffect} from "react";
 import {queryOptions, useSuspenseQuery} from "@tanstack/react-query";
 import {HomepageData} from "@/types/homepage";
 import Example3 from "@/app/(public)/example/3/page";
 import Example5 from "@/app/(public)/example/5/page";
 import Example7 from "@/app/(public)/example/7/page";
 import Example8 from "@/app/(public)/example/8/page";
+import Example1 from "@/app/(public)/example/1/page";
+import {useHomePageStore} from "@/app/store/useHomePageStore";
 
 export const pokemonOptions = queryOptions<HomepageData>({
     queryKey: ['homepage'],
     queryFn: async () => {
         const response = fetchHomePage()
-        return response['homepage']
+        return response
     },
 })
 
 
 const Content = () => {
     // const {data} = useHomePage()
-    const { data } = useSuspenseQuery(pokemonOptions)
-    console.log("data", data)
+    const { data, isLoading} = useSuspenseQuery(pokemonOptions)
+    const setHomepage = useHomePageStore((state) => state.setHomepage)
+
+    useEffect(() => {
+        if (data) {
+            setHomepage(data)  // Hydrate Zustand store with homepage data
+        }
+    }, [data])
 
     return (
         <div>
+            {isLoading && (<div>loading</div>)}
             <Header data={data.homepage.hero} />
             <SubHeaderBanner data={data.homepage.statistics} />
             <Example7 />
             <Example8 />
-            <StepService data={data.homepage.framework}/>
-            {/*<Example1 data={data.homepage.projects}/>*/}
+            {/*<StepService data={data.homepage.framework}/>*/}
+            <Example1/>
             <Example2/>
             {/*<Example3 />*/}
             <Example5 />
-
-
         </div>
     );
 };
