@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useLayoutEffect, useRef, useState } from "rea
 import Image from "next/image"
 import { useScroll, useTransform, motion, useInView } from "framer-motion"
 
-const projects = [
+ const projects = [
   {
     title: "Matthias Leidinger",
     description:
