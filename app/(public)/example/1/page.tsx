@@ -62,8 +62,8 @@ const Card = ({
                             {description}
                         </p>
                     </div>
-                    <div className="order-1 relative w-full  sm:w-1/2 h-1/2 sm:h-full">
-                        <motion.div className="relative w-full h-full">
+                    <div className="order-1 relative w-full  sm:w-1/2 h-1/2 sm:h-full overflow-hidden">
+                        <motion.div className="relative w-full h-full overflow-hidden">
                             <Image sizes={"100"} fill src={image} alt={`Project by ${title}`} objectFit={"cover"}/>
                         </motion.div>
                     </div>
