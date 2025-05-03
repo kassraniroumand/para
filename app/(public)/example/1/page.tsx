@@ -46,41 +46,25 @@ const Card = ({
         query: '(min-width: 728px)'
     })
 
-    const {scrollYProgress} = useScroll({
-        target: container,
-        offset: ["start start", "start start"],
-    })
-    const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1])
+
     return (
-        <div ref={container} className="sticky h-svh flex flex-col justify-center items-center" style={{top: isDesktopOrLaptop ? `0vh` : `0vh`}}
+        <div ref={container} className="sticky h-svh flex flex-col justify-center items-center mx-1 sm:mx-10"
+             style={{top: isDesktopOrLaptop ? `0vh` : `0vh`}}
         >
             <div
                 className="flex flex-col bg-white shadow-xl relative mb-4 h-full w-full  sm:h-2/3 rounded-4xl"
                 style={{backgroundColor: color}}
             >
-                <h2 className="text-center m-0 text-[28px] font-bold">{title}</h2>
-                <div className="flex flex-col md:flex-row h-full mt-[30px] md:mt-[50px] gap-[30px] md:gap-[50px]">
-                    <div className="w-full md:w-[40%] relative">
-                        <h3 className="text-xl font-bold mb-4">{headerText || title}</h3>
-                        <p className="text-[16px]">
-                            <span className="text-[28px] font-serif">{description[0]}</span>
-                            {description.slice(1)}
+                <div className="flex flex-col sm:flex-row md:flex-row h-full">
+                    <div className="order-2 w-full sm:w-1/2 h-1/2 sm:h-full relative flex flex-col justify-center items-center gap-12 px-1 sm:px-24">
+                        <h2 className="font-sans text-center m-0 text-3xl font-bold capitalize">{title}</h2>
+                        <p className="text-base">
+                            {description}
                         </p>
-                        <span className="flex items-center gap-1 mt-4">
-              <a href={link} target="_blank" rel="noopener noreferrer" className="text-[14px] underline cursor-pointer">
-                See more
-              </a>
-              <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M21.5303 6.53033C21.8232 6.23744 21.8232 5.76256 21.5303 5.46967L16.7574 0.696699C16.4645 0.403806 15.9896 0.403806 15.6967 0.696699C15.4038 0.989592 15.4038 1.46447 15.6967 1.75736L19.9393 6L15.6967 10.2426C15.4038 10.5355 15.4038 11.0104 15.6967 11.3033C15.9896 11.5962 16.4645 11.5962 16.7574 11.3033L21.5303 6.53033ZM0 6.75L21 6.75V5.25L0 5.25L0 6.75Z"
-                    fill="black"
-                />
-              </svg>
-            </span>
                     </div>
-                    <div className="relative w-full md:w-[60%] h-[300px] md:h-full rounded-[25px] overflow-hidden">
-                        <motion.div className="w-full h-full" style={{scale: imageScale}}>
-                            <Image fill src={image} alt={`Project by ${title}`} className="object-cover"/>
+                    <div className="order-1 relative w-full  sm:w-1/2 h-1/2 sm:h-full">
+                        <motion.div className="relative w-full h-full">
+                            <Image sizes={"100"} fill src={image} alt={`Project by ${title}`} objectFit={"cover"}/>
                         </motion.div>
                     </div>
                 </div>
@@ -94,10 +78,7 @@ const Example1 = () => {
     // const data = data2.homepage.projects
     const homepage = useHomePageStore((state) => state.homepage);
     // Access the state
-    console.log('homepage', homepage);
     const data = homepage?.homepage.projects
-    // console.log("data", data)
-    // const data = {}
     const [activeSection, setActiveSection] = useState(1)
 
     const container = useRef(null)
@@ -116,16 +97,17 @@ const Example1 = () => {
     }
 
     return (
-        <div className="container mx-auto  min-h-screen">
+        <div className="min-h-screen">
             {/* Responsive Layout */}
-            <div className="flex flex-col lg:flex-row relative gap-2">
-                <div className="hidden lg:flex w-full lg:w-1/3 p-6 pb-10  lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-10  flex-col justify-center items-center">
+            <div className="mx-5 sm:mx-0 flex flex-col lg:flex-row relative gap-2">
+                <div
+                    className="hidden lg:flex w-full lg:w-1/3 p-6 pb-10  lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-10  flex-col justify-center items-center">
                     {data?.projects?.map((project, index) => (
                         <div key={`section-${index}`} className="mb-4">
                             <div className="flex flex-row justify-end gap-4 items-center">
                                 <div
                                     className={` text-right text-xl font-medium cursor-pointer transition-colors duration-300 ${
-                                        activeSection === index+1 ? "text-black " : "text-gray-400"
+                                        activeSection === index + 1 ? "text-black " : "text-gray-400"
                                     }`}
                                 >
                                     {project.title}

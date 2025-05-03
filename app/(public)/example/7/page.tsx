@@ -1,14 +1,5 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { ChevronRight, Home, Settings, User } from "lucide-react";
-
+"use client"
+import {useEffect, useRef, useState} from "react";
 
 type CardItem = {
     image: string
@@ -60,29 +51,86 @@ function LeftSection({ title }: LeftSectionProps) {
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Image from "next/image";
+import {AnimatePresence, useInView, motion} from "framer-motion";
+
+import {  useAnimation } from "framer-motion";
 
 function SubItemAccordion({items}: {items:CardSubItem[]}) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: false, amount: 0.2 });
+    const [openItem, setOpenItem] = useState<string | null>(null);
+    const controls = useAnimation();
+
+    useEffect(() => {
+        if (isInView) {
+            controls.start(i => ({
+                opacity: 1,
+                y: 0,
+                transition: {
+                    delay: i * 0.1,
+                    duration: 0.3,
+                    ease: "easeOut"
+                }
+            }));
+        } else {
+            controls.start({ opacity: 0, y: 20 });
+        }
+    }, [isInView, controls]);
+
+    const handleAccordionToggle = (value: string) => {
+        setOpenItem(openItem === value ? null : value);
+    };
+
     return (
-        <div className="max-w-3xl mx-auto py-8 px-4 w-full">
-            <Accordion type="single" collapsible className="w-full">
-                {items.map((item, index) => (
-                    <AccordionItem value={item.title} key={index}>
-                        <AccordionTrigger className="text-xl font-semibold"> {item.title}</AccordionTrigger>
-                        <AccordionContent>
-                            <p className="py-4">
-                                {item.description_1}
-                            </p>
-                            <p className="py-4">
-                                {item.description_2}
-                            </p>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
+        <div ref={ref} className="max-w-3xl mx-auto py-8 px-4 w-full">
+            <Accordion
+                type="single"
+                collapsible
+                className="w-full"
+                value={openItem!!}
+                onValueChange={handleAccordionToggle}
+            >
+                {items.map((item, index) => {
+                    const isOpen = openItem === `${item.title}-${index}`;
+                    return (
+                        <motion.div
+                            key={index}
+                            custom={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={controls}
+                            className="mb-2"
+                        >
+                            <AccordionItem
+                                value={`${item.title}-${index}`}
+                            >
+                                <AccordionTrigger className="text-xl font-semibold opacity-70">
+                                    {item.title}
+                                </AccordionTrigger>
+                                <AnimatePresence initial={false}>
+                                    {isOpen && (
+                                        <motion.div
+                                            key="content"
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="p-4">
+                                                <p className="py-2">{item.description_1}</p>
+                                                <p className="py-2">{item.description_2}</p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </AccordionItem>
+                        </motion.div>
+                    );
+                })}
             </Accordion>
         </div>
-    )
+    );
 }
-
 
 // Right Section
 function RightSection({ card }: RightSectionProps) {
@@ -91,19 +139,19 @@ function RightSection({ card }: RightSectionProps) {
             <div className={"relative w-full aspect-square"}>
                 <Image src={card.image} alt={card.title} fill={true} objectFit={"cover"} />
             </div>
-            <p className={"text-lg font-medium"}>
+            <p className={"text-base sm:text-lg font-normal opacity-80"}>
                 {card.description_1}
             </p>
-            <p className={"text-lg font-medium"}>
+            <p className={"text-base sm:text-lg font-normal opacity-80"}>
                 {card.description_2}
             </p>
-            <h1 className={"text-3xl font-semibold mt-10"}>
+            <h1 className={"text-3xl font-semibold mt-10 opacity-80"}>
                 {card.subTitle}
             </h1>
-            <p className={"text-lg font-medium"}>
+            <p className={"text-base sm:text-lg font-normal opacity-80"}>
                 {card.subDescription_1}
             </p>
-            <p className={"text-lg font-medium"}>
+            <p className={"text-base sm:text-lg font-normal opacity-80"}>
                 {card.subDescription_2}
             </p>
             <div className={"mt-10 w-full"}>

@@ -41,6 +41,7 @@ const Content = () => {
             {isLoading && (<div>loading</div>)}
             <Header data={data.homepage.hero} />
             <SubHeaderBanner data={data.homepage.statistics} />
+            {/* services */}
             <Example7 />
             <Example8 />
             {/*<StepService data={data.homepage.framework}/>*/}
