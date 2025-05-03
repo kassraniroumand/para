@@ -40,7 +40,7 @@ const Content = () => {
         <div>
             {isLoading && (<div>loading</div>)}
             <Header data={data.homepage.hero} />
-            <SubHeaderBanner data={data.homepage.statistics} />
+            {/*<SubHeaderBanner data={data.homepage.statistics} />*/}
             {/* services */}
             <Example7 />
             <Example8 />
