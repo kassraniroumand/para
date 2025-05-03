@@ -82,7 +82,7 @@ function SubItemAccordion({items}: {items:CardSubItem[]}) {
     };
 
     return (
-        <div ref={ref} className="max-w-3xl mx-auto py-8 px-4 w-full">
+        <div ref={ref} className="py-8 px-4 w-full">
             <Accordion
                 type="single"
                 collapsible
@@ -217,10 +217,7 @@ function RightSection({ card }: RightSectionProps) {
                 {card.subDescription_2}
             </motion.p>
 
-            <motion.div
-            >
-                <SubItemAccordion items={card.items} />
-            </motion.div>
+            <SubItemAccordion items={card.items} />
         </div>
     );
 }

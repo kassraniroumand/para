@@ -1,10 +1,18 @@
 "use client"
 import {HomepageData} from "@/types/homepage";
 import Image from "next/image";
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import React, {useEffect, useState} from "react";
 import {useMediaQuery} from "react-responsive";
+import Autoplay from "embla-carousel-autoplay"
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import { Card, CardContent } from "@/components/ui/card"
 
   const pros = [
     {title: "test1", description: "test1", image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp"},
@@ -15,91 +23,42 @@ import {useMediaQuery} from "react-responsive";
   ]
 
 
-const MovingBoxesRow = () => {
-  const controls = useAnimation();
-  const isMobile = useMediaQuery({ maxWidth: 768 });
-  const [visibleBoxes, setVisibleBoxes] = useState(1); // Default to 1 box
-  const boxWidth = 300; // Each box is 300px wide
-  const originalBoxes = [1, 2, 3, 4, 5];
-  const boxes = [...originalBoxes, ...originalBoxes];
-
-  // Animation definition
-  const animationProps = {
-    x: ['0%', `-${(boxWidth * originalBoxes.length)}px`],
-    transition: {
-      x: {
-        repeat: Infinity,
-        duration: originalBoxes.length * 3,
-        ease: 'linear'
-      }
-    }
-  };
-
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window !== 'undefined') {
-      setVisibleBoxes(isMobile ? 1 : Math.floor(window.innerWidth / boxWidth));
-
-      const handleResize = () => {
-        setVisibleBoxes(isMobile ? 1 : Math.floor(window.innerWidth / boxWidth));
-      };
-
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
-    controls.start(animationProps);
-  }, [controls, isMobile]);
-
+export function CarouselDemo() {
   return (
-      <div style={{
-        overflow: 'hidden',
-        width: `${boxWidth * visibleBoxes}px`,
-        maxWidth: '100%',
-        position: 'relative',
-        margin: '0 auto'
-      }}>
-        <motion.div
-            style={{
-              display: 'flex',
-              width: 'max-content'
-            }}
-            animate={controls}
-            onHoverStart={() => !isMobile && controls.stop()}
-            onHoverEnd={() => !isMobile && controls.start(animationProps)}
-        >
-          {boxes.map((box, index) => (
-              <motion.div
-                  key={`${box}-${index}`}
-                  style={{
-                    width: `${boxWidth}px`,
-                    height: '200px',
-                    backgroundColor: index < originalBoxes.length ? 'blue' : 'lightblue',
-                    marginRight: '10px',
-                    borderRadius: '8px',
-                    flexShrink: 0
-                  }}
-                  whileHover={{ scale: isMobile ? 1 : 1.05 }}
-                  onTapStart={() => isMobile && controls.stop()}
-                  onTapCancel={() => isMobile && controls.start(animationProps)}
-                  onPanStart={() => isMobile && controls.stop()}
-                  onPanEnd={() => isMobile && controls.start(animationProps)}
-              />
+      <Carousel
+          plugins={[
+            Autoplay({
+              delay: 1000,
+            }),
+          ]}
+          className="w-screen h-full">
+        <CarouselContent className="h-full">
+          {pros.map((item, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/5 h-full">
+                <div className="h-full">
+                  <div className="relative h-[40svh] bg-red-300">
+                    <div className={"w-full h-full"}>
+                      <Image
+                          objectFit={"cover"}
+                          src={item.image} alt={item.title} fill={true} sizes={"100"} />
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
           ))}
-        </motion.div>
-      </div>
-  );
-};
-
+        </CarouselContent>
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10" />
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10" />
+      </Carousel>
+  )
+}
 
 export default function Home({data}: {data: HomepageData['homepage']['hero']}) {
 
 
   return (
     <main className="flex flex-col items-center justify-center bg-white">
-      <section className="h-[70svh] flex flex-col items-center justify-center bg-white">
+      <section className="h-[60svh] flex flex-col items-center justify-center bg-white">
         {/* Heading - Different layouts for mobile and desktop */}
         <h1 className="font-bold tracking-tight text-black mb-6">
           {/* Mobile heading (stacked) */}
@@ -118,7 +77,7 @@ export default function Home({data}: {data: HomepageData['homepage']['hero']}) {
           </span>
         </h1>
 
-        <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12 px-2">
+        <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12 px-10">
           We assign our trained wizards to your project who develop, design, and digitally market your business. Hire us
           and see the magic happen
         </p>
@@ -177,8 +136,8 @@ export default function Home({data}: {data: HomepageData['homepage']['hero']}) {
         {/*</div>*/}
       </section>
 
-      <div className={"bg-red-300 h-[30svh] w-full"}>
-        <MovingBoxesRow />
+      <div className={"h-[40svh] w-full"}>
+        <CarouselDemo />
       </div>
 
     </main>
