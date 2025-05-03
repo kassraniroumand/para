@@ -134,29 +134,93 @@ function SubItemAccordion({items}: {items:CardSubItem[]}) {
 
 // Right Section
 function RightSection({ card }: RightSectionProps) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: false, amount: 0.2 });
+    const controls = useAnimation();
+
+    useEffect(() => {
+        if (isInView) {
+            controls.start(i => ({
+                opacity: 1,
+                y: 0,
+                transition: {
+                    delay: i * 0.2,
+                    duration: 0.3,
+                    ease: "easeOut"
+                }
+            }));
+        } else {
+            controls.start(i => ({
+                opacity: 0,
+                y: 20,
+                transition: {
+                    duration: 0.2,
+                    ease: "easeIn"
+                }
+            }));
+        }
+    }, [isInView, controls]);
+
     return (
-        <div className="p-6 w-full flex flex-col justify-center items-start space-y-6">
-            <div className={"relative w-full aspect-square"}>
+        <div ref={ref} className="p-6 w-full flex flex-col justify-center items-start gap-6">
+            <motion.div
+                className={"relative w-full aspect-square"}
+                custom={0}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 <Image src={card.image} alt={card.title} fill={true} objectFit={"cover"} />
-            </div>
-            <p className={"text-base sm:text-lg font-normal opacity-80"}>
+            </motion.div>
+
+            <motion.p
+                className={"text-base sm:text-lg font-normal opacity-80"}
+                custom={1}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 {card.description_1}
-            </p>
-            <p className={"text-base sm:text-lg font-normal opacity-80"}>
+            </motion.p>
+
+            <motion.p
+                className={"text-base sm:text-lg font-normal opacity-80"}
+                custom={2}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 {card.description_2}
-            </p>
-            <h1 className={"text-3xl font-semibold mt-10 opacity-80"}>
+            </motion.p>
+
+            <motion.h1
+                className={"text-3xl font-semibold mt-10 opacity-80"}
+                custom={3}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 {card.subTitle}
-            </h1>
-            <p className={"text-base sm:text-lg font-normal opacity-80"}>
+            </motion.h1>
+
+            <motion.p
+                className={"text-base sm:text-lg font-normal opacity-80"}
+                custom={4}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 {card.subDescription_1}
-            </p>
-            <p className={"text-base sm:text-lg font-normal opacity-80"}>
+            </motion.p>
+
+            <motion.p
+                className={"text-base sm:text-lg font-normal opacity-80"}
+                custom={5}
+                initial={{ opacity: 0, y: 20 }}
+                animate={controls}
+            >
                 {card.subDescription_2}
-            </p>
-            <div className={"mt-10 w-full"}>
+            </motion.p>
+
+            <motion.div
+            >
                 <SubItemAccordion items={card.items} />
-            </div>
+            </motion.div>
         </div>
     );
 }
