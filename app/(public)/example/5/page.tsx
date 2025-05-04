@@ -1,57 +1,172 @@
 "use client"
 
-import {ReactNode, useEffect, useRef, useState} from "react"
-import {Circle, Clock, User} from "lucide-react"
+import React, {ReactNode, useEffect, useRef, useState} from "react"
+import {Circle, Clock, Moon, Sun, User} from "lucide-react"
 import {useInView} from "framer-motion"
 import {Card} from "@/components/ui/card"
 import {Separator} from "@/components/ui/separator"
 import {useMediaQuery} from "react-responsive";
 import Image from "next/image";
 import {motion} from "framer-motion";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Button} from "@/components/ui/button";
+import { CardContent } from "@/components/ui/card"
+
+// const tabs = ["Overview", "Integrations", "Activity", "Domains", "Usage", "Monitoring"]
+
+interface TabProps {
+    tabs: string[];
+    children: React.ReactNode[];
+    defaultActiveIndex?: number;
+    darkMode?: boolean;
+    hoverColor?: string;
+    activeColor?: string;
+    inactiveColor?: string;
+    indicatorHeight?: string;
+    tabPadding?: string;
+    tabFontSize?: string;
+    className?: string;
+    contentClassName?: string;
+}
+
+const Tabs: React.FC<TabProps> = ({
+                                      tabs,
+                                      children,
+                                      defaultActiveIndex = 0,
+                                      darkMode = false,
+                                      hoverColor = darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(14, 15, 17, 0.08)',
+                                      activeColor = darkMode ? '#ffffff' : '#0e0f11',
+                                      inactiveColor = darkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(14, 15, 17, 0.6)',
+                                      indicatorHeight = '2px',
+                                      tabPadding = '8px 12px',
+                                      tabFontSize = '0.875rem',
+                                      className = '',
+                                      contentClassName = '',
+                                  }) => {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [activeIndex, setActiveIndex] = useState(defaultActiveIndex);
+    const [hoverStyle, setHoverStyle] = useState({});
+    const [activeStyle, setActiveStyle] = useState({ left: '0px', width: '0px' });
+    const [isDarkMode, setIsDarkMode] = useState(darkMode);
+    const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    // Validate that tabs and children match
+    useEffect(() => {
+        if (tabs.length !== children.length) {
+            console.warn('The number of tabs does not match the number of children elements');
+        }
+    }, [tabs, children]);
+
+    useEffect(() => {
+        if (hoveredIndex !== null) {
+            const hoveredElement = tabRefs.current[hoveredIndex];
+            if (hoveredElement) {
+                const { offsetLeft, offsetWidth } = hoveredElement;
+                setHoverStyle({
+                    left: `${offsetLeft}px`,
+                    width: `${offsetWidth}px`,
+                });
+            }
+        }
+    }, [hoveredIndex]);
+
+    useEffect(() => {
+        const activeElement = tabRefs.current[activeIndex];
+        if (activeElement) {
+            const { offsetLeft, offsetWidth } = activeElement;
+            setActiveStyle({
+                left: `${offsetLeft}px`,
+                width: `${offsetWidth}px`,
+            });
+        }
+    }, [activeIndex]);
+
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            const activeElement = tabRefs.current[activeIndex];
+            if (activeElement) {
+                const { offsetLeft, offsetWidth } = activeElement;
+                setActiveStyle({
+                    left: `${offsetLeft}px`,
+                    width: `${offsetWidth}px`,
+                });
+            }
+        });
+    }, []);
+
+    const toggleDarkMode = () => {
+        const newMode = !isDarkMode;
+        setIsDarkMode(newMode);
+        document.documentElement.classList.toggle('dark', newMode);
+    };
+
+    return (
+        <div className={`flex flex-col w-full ${isDarkMode ? 'dark bg-[#0e0f11]' : ''} ${className}`}>
+            <div className={`w-full border-none shadow-none relative flex items-start justify-center ${isDarkMode ? 'bg-transparent' : ''}`}>
+                <div className="p-0 w-full h-full">
+                    <div className="relative">
+                        {/* Hover Highlight */}
+                        <div
+                            className="absolute transition-all duration-300 ease-out rounded-[6px] flex items-center"
+                            style={{
+                                ...hoverStyle,
+                                opacity: hoveredIndex !== null ? 1 : 0,
+                                backgroundColor: hoverColor,
+                                height: `calc(${tabPadding.split(' ')[0]} * 2 + 1em)`,
+                            }}
+                        />
+
+                        {/* Active Indicator */}
+                        <div
+                            className="absolute bottom-[-6px] transition-all duration-300 ease-out"
+                            style={{
+                                ...activeStyle,
+                                backgroundColor: activeColor,
+                                height: indicatorHeight,
+                            }}
+                        />
+
+                        {/* Tabs */}
+                        <div className="relative flex space-x-[6px] items-center">
+                            {tabs.map((tab, index) => (
+                                <div
+                                    key={index}
+                                    ref={(el: HTMLDivElement | null) => {
+                                        tabRefs.current[index] = el;
+                                    }}
+                                    className={`cursor-pointer transition-colors duration-300 flex items-center justify-center`}
+                                    style={{
+                                        padding: tabPadding,
+                                        color: index === activeIndex ? activeColor : inactiveColor,
+                                        fontSize: tabFontSize,
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(index)}
+                                    onMouseLeave={() => setHoveredIndex(null)}
+                                    onClick={() => setActiveIndex(index)}
+                                >
+                                    {tab}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className={`mt-4 ${contentClassName}`}>
+                {React.Children.map(children, (child, index) => (
+                    <div
+                        key={index}
+                        style={{ display: index === activeIndex ? 'block' : 'none' }}
+                    >
+                        {child}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 // Unified section data
-const sectionData = [
-    {
-        id: 1,
-        title: "Recent Contacts",
-        description: "These are your most recent contacts.",
-        icon: <Clock className="h-6 w-6 text-primary/60"/>,
-        image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-        content: (
-            <p>
-                Our discovery phase includes gathering key data, brainstorming internally, and collaborating closely
-                to develop a detailed project plan. This sets the project up for success.
-            </p>
-        ),
-    },
-    {
-        id: 2,
-        title: "Favorite Contacts",
-        description: "Your favorite contacts.",
-        image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-        icon: <div className="text-2xl">❤️</div>,
-        content: (
-            <p>
-                During the wireframing phase, we create structural blueprints. This outlines layout, user flow, and
-                interface elements before detailed design.
-            </p>
-        ),
-    },
-    {
-        id: 3,
-        title: "Other Contacts",
-        description: "Other miscellaneous contacts.",
-        image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-        icon: <User className="h-6 w-6 text-muted-foreground"/>,
-        content: (
-            <p>
-                The content phase focuses on developing messaging and visual assets, ensuring everything aligns with
-                brand and project goals.
-            </p>
-        ),
-    },
-]
 
 // Scroll-aware section component
 const ScrollSection = ({key, section, activeSection, setActiveSection, children}: {
@@ -81,7 +196,9 @@ const ScrollSection = ({key, section, activeSection, setActiveSection, children}
 }
 
 
-const CardContent = () => {
+const CardContent2 = ({title, tabs, index,total}: {index: number,
+    total: number,
+    title: string, tabs: {title:string, description:string}[]}) => {
     const [activeTab, setActiveTab] = useState('account');
 
     const tabContent = {
@@ -114,116 +231,25 @@ const CardContent = () => {
             </p>
         ),
     }
-
+    // const tabs = ["Overview", "Integrations", "Activity"];
     return (
         <>
             <div className="space-y-8 justify-center items-start flex flex-col w-full">
                 <div className={"mt-4 w-full flex flex-col items-center sm:items-start justify-center"}>
-                    <p className="text-gray-400 tracking-widest">PHASE 1 / 4</p>
-                    <h1 className="text-6xl font-serif mt-4">Planning</h1>
+                    <p className="text-gray-400 tracking-widest">PHASE {index} / {total}</p>
+                    <h1 className="text-4xl  font-serif mt-4">{title}</h1>
                 </div>
 
                 <div className="w-full ">
-                    <Tabs defaultValue="account" className="w-full" onValueChange={setActiveTab}>
-                        <div className="relative">
-                            <TabsList className="w-full justify-center sm:justify-start h-auto bg-transparent p-0 mb-6">
-                                <TabsTrigger
-                                    value="account"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none relative px-4 py-2 h-10"
-                                >
-                                    Account
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="password"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none relative px-4 py-2 h-10"
-                                >
-                                    Password
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="settings"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none relative px-4 py-2 h-10"
-                                >
-                                    Settings
-                                </TabsTrigger>
-                            </TabsList>
-
-                            {/* Animated underline */}
-                            <motion.div
-                                className="absolute bottom-0 h-0.5 bg-primary"
-                                animate={{
-                                    left: activeTab === "account" ? "0%" : activeTab === "password" ? "12.33%" : "26.66%",
-                                    width: "12.33%",
-                                }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 500,
-                                    damping: 30,
-                                }}
-                            />
-                        </div>
-
-                        <TabsContent value="account" className="p-6 border rounded-lg">
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium">Account Settings</h3>
-                                <p className="text-sm text-muted-foreground">Manage your account settings and preferences.</p>
-                                <div className="grid gap-4">
-                                    <div className="grid gap-2">
-                                        <label htmlFor="name" className="text-sm font-medium">
-                                            Name
-                                        </label>
-                                        <input id="name" type="text" className="w-full p-2 border rounded-md" placeholder="Your name" />
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <label htmlFor="email" className="text-sm font-medium">
-                                            Email
-                                        </label>
-                                        <input id="email" type="email" className="w-full p-2 border rounded-md" placeholder="Your email" />
-                                    </div>
-                                </div>
+                    <Tabs
+                        tabs={tabs.map(tab=>tab.title)}
+                        contentClassName="p-4 border rounded-lg"
+                    >
+                        {tabs.map((tab, index) => (
+                            <div>
+                                {tab.description}
                             </div>
-                        </TabsContent>
-
-                        <TabsContent value="password" className="p-6 border rounded-lg">
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium">Password Settings</h3>
-                                <p className="text-sm text-muted-foreground">Update your password and security preferences.</p>
-                                <div className="grid gap-4">
-                                    <div className="grid gap-2">
-                                        <label htmlFor="current" className="text-sm font-medium">
-                                            Current Password
-                                        </label>
-                                        <input id="current" type="password" className="w-full p-2 border rounded-md" placeholder="••••••••" />
-                                    </div>
-                                    <div className="grid gap-2">
-                                        <label htmlFor="new" className="text-sm font-medium">
-                                            New Password
-                                        </label>
-                                        <input id="new" type="password" className="w-full p-2 border rounded-md" placeholder="••••••••" />
-                                    </div>
-                                </div>
-                            </div>
-                        </TabsContent>
-
-                        <TabsContent value="settings" className="p-6 border rounded-lg">
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium">General Settings</h3>
-                                <p className="text-sm text-muted-foreground">Configure your application preferences.</p>
-                                <div className="grid gap-4">
-                                    <div className="flex items-center space-x-2">
-                                        <input id="notifications" type="checkbox" className="h-4 w-4" />
-                                        <label htmlFor="notifications" className="text-sm font-medium">
-                                            Enable notifications
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <input id="marketing" type="checkbox" className="h-4 w-4" />
-                                        <label htmlFor="marketing" className="text-sm font-medium">
-                                            Receive marketing emails
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </TabsContent>
+                        ))}
                     </Tabs>
                 </div>
             </div>
@@ -234,20 +260,22 @@ const CardContent = () => {
 
 
 // Main layout with scrollable sections
- function ScrollableSection() {
+ function ScrollableSection({sectionData}: {sectionData: any}) {
     const [activeSection, setActiveSection] = useState(1)
 
     return (
         <div className="flex w-full">
             {/* Left Panel */}
             <div className="w-1/2 overflow-y-auto">
-                {sectionData.map((section) => (
+                {sectionData.map((section,index) => (
                     <ScrollSection key={section.id}
                                    section={section}
                                    activeSection={activeSection}
                                    setActiveSection={setActiveSection}
                     >
-                        <CardContent/>
+                        <CardContent2
+                            total={sectionData.length}
+                            index={index+1} title={section.title} tabs={section.tabs}  />
                     </ScrollSection>
                 ))}
             </div>
@@ -267,15 +295,17 @@ const CardContent = () => {
 }
 
 
-const MobileSection = () => {
+const MobileSection = ({sectionData}: {sectionData: any}) => {
     return (
         <div  className={"w-full h-fit block"}>
-            {sectionData.map((section) => (
+            {sectionData.map((section,index) => (
                 <div className={"min-h-svh h-auto mb-12 w-full"}>
                     <div className={"relative w-full h-auto aspect-square"}>
                         <Image src={section.image} alt={section.title} fill={true} />
                     </div>
-                    <CardContent />
+                    <CardContent2 index={index+1}
+                                  total={sectionData.length}
+                                  title={section.title} tabs={section.tabs}  />
                 </div>
             ))}
         </div>
@@ -286,10 +316,66 @@ const MobileSection = () => {
 // Page export
 export default function Example5() {
     const isDesktop = useMediaQuery({query: "(min-width: 728px)"})
+    const sectionData = [
+        {
+            id: 1,
+            title: "Recent Contacts",
+            description: "These are your most recent contacts.",
+            icon: <Clock className="h-6 w-6 text-primary/60"/>,
+            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
+            tabs: [
+                {title:"title 1", description:"description 1"},
+                {title:"title 2", description:"description 2"},
+                {title:"title 3", description:"description 3"},
+                {title:"title 4", description:"description 4"},
+                {title:"title 5", description:"description 5"}
+            ]
+        },
+        {
+            id: 1,
+            title: "Recent Contacts",
+            description: "These are your most recent contacts.",
+            icon: <Clock className="h-6 w-6 text-primary/60"/>,
+            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
+            tabs: [
+                {title:"title 1", description:"description 1"},
+                {title:"title 2", description:"description 2"},
+                {title:"title 3", description:"description 3"},
+                {title:"title 4", description:"description 4"},
+                {title:"title 5", description:"description 5"}
+            ]
+        },
+        // {
+        //     id: 2,
+        //     title: "Favorite Contacts",
+        //     description: "Your favorite contacts.",
+        //     image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
+        //     icon: <div className="text-2xl">❤️</div>,
+        //     content: (
+        //         <p>
+        //             During the wireframing phase, we create structural blueprints. This outlines layout, user flow, and
+        //             interface elements before detailed design.
+        //         </p>
+        //     ),
+        // },
+        // {
+        //     id: 3,
+        //     title: "Other Contacts",
+        //     description: "Other miscellaneous contacts.",
+        //     image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
+        //     icon: <User className="h-6 w-6 text-muted-foreground"/>,
+        //     content: (
+        //         <p>
+        //             The content phase focuses on developing messaging and visual assets, ensuring everything aligns with
+        //             brand and project goals.
+        //         </p>
+        //     ),
+        // },
+    ]
 
     return (
         <main className="container mx-auto flex  min-h-screen flex-col items-center justify-between">
-            {isDesktop ? (<ScrollableSection/>) : (<MobileSection/>)}
+            {isDesktop ? (<ScrollableSection sectionData={sectionData}/>) : (<MobileSection sectionData={sectionData}/>)}
         </main>
     )
 }
