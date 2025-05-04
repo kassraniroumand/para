@@ -49,6 +49,7 @@ const Content = () => {
             <Example7 />
             <Example8 />
             {/*<StepService data={data.homepage.framework}/>*/}
+
             <Example1/>
             <Example2/>
             {/*<Example3 />*/}

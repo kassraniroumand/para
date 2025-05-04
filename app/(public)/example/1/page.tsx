@@ -56,15 +56,26 @@ const Card = ({
                 style={{backgroundColor: color}}
             >
                 <div className="flex flex-col sm:flex-row md:flex-row h-full">
-                    <div className="order-2 w-full sm:w-1/2 h-1/2 sm:h-full relative flex flex-col justify-center items-center gap-12 px-1 sm:px-24">
-                        <h2 className="font-sans text-center m-0 text-3xl font-bold capitalize">{title}</h2>
-                        <p className="text-base">
-                            {description}
-                        </p>
-                    </div>
-                    <div className="order-1 relative w-full  sm:w-1/2 h-1/2 sm:h-full overflow-hidden">
+                    {/*<div className="order-2 w-full sm:w-1/2 h-1/2 sm:h-full relative flex flex-col justify-center items-center gap-12 px-1 sm:px-24">*/}
+                    {/*    <h2 className="font-sans text-center m-0 text-3xl font-bold capitalize">{title}</h2>*/}
+                    {/*    <p className="text-base">*/}
+                    {/*        {description}*/}
+                    {/*    </p>*/}
+                    {/*</div>*/}
+                    <div className="order-1 relative w-full h-full rounded-xl  sm:h-full overflow-hidden">
                         <motion.div className="relative w-full h-full overflow-hidden">
                             <Image sizes={"100"} fill src={image} alt={`Project by ${title}`} objectFit={"cover"}/>
+                            <div className={"absolute w-full h-full top-0 left-0 bg-black opacity-70"}></div>
+                            <div className={"absolute top-0 left-0 w-full sm:w-1/2 h-full flex flex-col justify-end  sm:justify-center items-center gap-10 pb-14 sm:pb-0"}>
+                                <p className={"text-white text-4xl font-medium opacity-80"}>sdafjlksjdfl</p>
+                                <p className={"text-white text-2xl font-medium opacity-80"}>sdafjlksjdfl</p>
+                                <div className={"grid grid-cols-2 grid-rows-2 gap-4 px-4"}>
+                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>sdaf</p>
+                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>asfd</p>
+                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>fas</p>
+                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>fsdaasdf</p>
+                                </div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
@@ -100,8 +111,7 @@ const Example1 = () => {
         <div className="min-h-screen">
             {/* Responsive Layout */}
             <div className="mx-5 sm:mx-0 flex flex-col lg:flex-row relative gap-2">
-                <div
-                    className="hidden lg:flex w-full lg:w-1/3 p-6 pb-10  lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-10  flex-col justify-center items-center">
+                <div className="hidden lg:flex w-full lg:w-1/4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-10  flex-col justify-center items-end">
                     {data?.projects?.map((project, index) => (
                         <div key={`section-${index}`} className="mb-4">
                             <div className="flex flex-row justify-end gap-4 items-center">
@@ -119,9 +129,8 @@ const Example1 = () => {
                         </div>
                     ))}
                 </div>
-
                 {/* Projects Section - This is the container for all cards */}
-                <div className="w-full lg:w-2/3 relative ">
+                <div className="w-full lg:w-3/4 relative">
                     {/* This div is the actual scrollable container */}
                     <div ref={container} className="relative">
                         {data?.projects?.map((project, index) => (
