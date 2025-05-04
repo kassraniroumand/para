@@ -15,6 +15,7 @@ import Example7 from "@/app/(public)/example/7/page";
 import Example8 from "@/app/(public)/example/8/page";
 import Example1 from "@/app/(public)/example/1/page";
 import {useHomePageStore} from "@/app/store/useHomePageStore";
+import Example9 from "@/app/(public)/example/9/page";
 
 export const pokemonOptions = queryOptions<HomepageData>({
     queryKey: ['homepage'],
@@ -40,6 +41,9 @@ const Content = () => {
         <div>
             {isLoading && (<div>loading</div>)}
             <Header data={data.homepage.hero} />
+            <div className={"mt-5"}>
+                <Example9 />
+            </div>
             {/*<SubHeaderBanner data={data.homepage.statistics} />*/}
             {/* services */}
             <Example7 />

@@ -144,7 +144,7 @@ export function CarouselDemo() {
         <Carousel
             plugins={[
                 Autoplay({
-                    delay: 1000,
+                    delay: 2000,
                 }),
             ]}
             className="w-screen h-full">
