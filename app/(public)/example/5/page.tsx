@@ -240,7 +240,7 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
                     <h1 className="text-4xl  font-serif mt-4">{title}</h1>
                 </div>
 
-                <div className="w-full ">
+                <div className="w-full px-5 sm:px-0">
                     <Tabs
                         tabs={tabs.map(tab=>tab.title)}
                         contentClassName="p-4 border rounded-lg"
