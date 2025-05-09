@@ -2,17 +2,16 @@
 
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react"
 import Image from "next/image"
-import {useScroll, useTransform, motion, useInView} from "framer-motion"
+import {motion, useInView, useScroll} from "framer-motion"
 import {useMediaQuery} from "react-responsive";
-import {HomepageData} from "@/types/homepage";
 import {useHomePageStore} from "@/app/store/useHomePageStore";
 
 interface CardProps {
     title: string
     description: string
     image: string
-    link: string
-    color: string
+    link?: string
+    color?: string
     i: number
     section: number,
     activeSection: number,
@@ -89,7 +88,7 @@ const Example1 = () => {
     // const data = data2.homepage.projects
     const homepage = useHomePageStore((state) => state.homepage);
     // Access the state
-    const data = homepage?.homepage.projects
+    const data = homepage?.homepage.sections.advantage
     const [activeSection, setActiveSection] = useState(1)
 
     const container = useRef(null)
@@ -101,8 +100,9 @@ const Example1 = () => {
 
     // Get the next project title for header text
     const getNextProjectHeader = (index: number): string => {
-        if (data && index < data?.projects.length - 1) {
-            return `Next: ${data?.projects[index + 1].title}`
+        if (data && index < data?.length - 1) {
+            // return `Next: ${data?[index + 1]?.title}`
+            return "fds"
         }
         return "End of Projects"
     }
@@ -112,7 +112,7 @@ const Example1 = () => {
             {/* Responsive Layout */}
             <div className="mx-5 sm:mx-0 flex flex-col lg:flex-row relative gap-2">
                 <div className="hidden lg:flex w-full lg:w-1/4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-10  flex-col justify-center items-end">
-                    {data?.projects?.map((project, index) => (
+                    {data?.map((project, index) => (
                         <div key={`section-${index}`} className="mb-4">
                             <div className="flex flex-row justify-end gap-4 items-center">
                                 <div
@@ -133,14 +133,14 @@ const Example1 = () => {
                 <div className="w-full lg:w-3/4 relative">
                     {/* This div is the actual scrollable container */}
                     <div ref={container} className="relative">
-                        {data?.projects?.map((project, index) => (
+                        {data?.map((project, index) => (
                             <Card key={`p_${index}`}
                                   section={index + 1}
                                   activeSection={activeSection}
                                   setActiveSection={setActiveSection}
-                                  color={project.color || ""}
+                                  // color={project?.color || ""}
                                   description={project.description || ""}
-                                  link={project.link || "/"}
+                                  // link={project.link || "/"}
                                   title={project.title || ""}
                                   image={project.image || ""}
                                   i={index}

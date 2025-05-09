@@ -118,3 +118,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .tabs-trigger[data-state='active'] {
+    @apply bg-primary text-primary-foreground shadow;
+  }
+}

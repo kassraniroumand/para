@@ -31,7 +31,7 @@ export default function AuthAdminPage() {
       <h1>Admin Control Panel</h1>
       <p>Welcome, {user?.username}. This page is only accessible to administrators.</p>
 
-      <Link href={"/auth/form"}>
+      <Link href={"/auth/pages"}>
         Form
       </Link>
 

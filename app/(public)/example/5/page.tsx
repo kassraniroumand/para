@@ -1,15 +1,11 @@
 "use client"
 
 import React, {ReactNode, useEffect, useRef, useState} from "react"
-import {Circle, Clock, Moon, Sun, User} from "lucide-react"
 import {useInView} from "framer-motion"
-import {Card} from "@/components/ui/card"
-import {Separator} from "@/components/ui/separator"
 import {useMediaQuery} from "react-responsive";
 import Image from "next/image";
-import {motion} from "framer-motion";
-import {Button} from "@/components/ui/button";
-import { CardContent } from "@/components/ui/card"
+import {FrameworkData, frameworkSteps} from "@/app/types";
+import {useHomePageStore} from "@/app/store/useHomePageStore";
 
 // const tabs = ["Overview", "Integrations", "Activity", "Domains", "Usage", "Monitoring"]
 
@@ -45,13 +41,13 @@ const Tabs: React.FC<TabProps> = ({
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [activeIndex, setActiveIndex] = useState(defaultActiveIndex);
     const [hoverStyle, setHoverStyle] = useState({});
-    const [activeStyle, setActiveStyle] = useState({ left: '0px', width: '0px' });
+    const [activeStyle, setActiveStyle] = useState({left: '0px', width: '0px'});
     const [isDarkMode, setIsDarkMode] = useState(darkMode);
     const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     // Validate that tabs and children match
     useEffect(() => {
-        if (tabs.length !== children.length) {
+        if (tabs?.length !== children?.length) {
             console.warn('The number of tabs does not match the number of children elements');
         }
     }, [tabs, children]);
@@ -60,7 +56,7 @@ const Tabs: React.FC<TabProps> = ({
         if (hoveredIndex !== null) {
             const hoveredElement = tabRefs.current[hoveredIndex];
             if (hoveredElement) {
-                const { offsetLeft, offsetWidth } = hoveredElement;
+                const {offsetLeft, offsetWidth} = hoveredElement;
                 setHoverStyle({
                     left: `${offsetLeft}px`,
                     width: `${offsetWidth}px`,
@@ -72,7 +68,7 @@ const Tabs: React.FC<TabProps> = ({
     useEffect(() => {
         const activeElement = tabRefs.current[activeIndex];
         if (activeElement) {
-            const { offsetLeft, offsetWidth } = activeElement;
+            const {offsetLeft, offsetWidth} = activeElement;
             setActiveStyle({
                 left: `${offsetLeft}px`,
                 width: `${offsetWidth}px`,
@@ -84,7 +80,7 @@ const Tabs: React.FC<TabProps> = ({
         requestAnimationFrame(() => {
             const activeElement = tabRefs.current[activeIndex];
             if (activeElement) {
-                const { offsetLeft, offsetWidth } = activeElement;
+                const {offsetLeft, offsetWidth} = activeElement;
                 setActiveStyle({
                     left: `${offsetLeft}px`,
                     width: `${offsetWidth}px`,
@@ -101,7 +97,8 @@ const Tabs: React.FC<TabProps> = ({
 
     return (
         <div className={`flex flex-col w-full ${isDarkMode ? 'dark bg-[#0e0f11]' : ''} ${className}`}>
-            <div className={`w-full border-none shadow-none relative flex items-start justify-center ${isDarkMode ? 'bg-transparent' : ''}`}>
+            <div
+                className={`w-full border-none shadow-none relative flex items-start justify-center ${isDarkMode ? 'bg-transparent' : ''}`}>
                 <div className="p-0 w-full h-full">
                     <div className="relative">
                         {/* Hover Highlight */}
@@ -127,7 +124,7 @@ const Tabs: React.FC<TabProps> = ({
 
                         {/* Tabs */}
                         <div className="relative flex space-x-[6px] items-center">
-                            {tabs.map((tab, index) => (
+                            {tabs?.map((tab, index) => (
                                 <div
                                     key={index}
                                     ref={(el: HTMLDivElement | null) => {
@@ -156,7 +153,7 @@ const Tabs: React.FC<TabProps> = ({
                 {React.Children.map(children, (child, index) => (
                     <div
                         key={index}
-                        style={{ display: index === activeIndex ? 'block' : 'none' }}
+                        style={{display: index === activeIndex ? 'block' : 'none'}}
                     >
                         {child}
                     </div>
@@ -196,11 +193,13 @@ const ScrollSection = ({key, section, activeSection, setActiveSection, children}
 }
 
 
-const CardContent2 = ({title, tabs, index,total}: {index: number,
+const CardContent2 = ({title, tabs, index, total}: {
+    index: number,
     total: number,
-    title: string, tabs: {title:string, description:string}[]}) => {
+    title: string,
+    tabs: frameworkSteps
+}) => {
     const [activeTab, setActiveTab] = useState('account');
-
     const tabContent = {
         discovery: (
             <p className="text-lg leading-relaxed text-gray-800">
@@ -242,10 +241,10 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
 
                 <div className="w-full px-5 sm:px-0">
                     <Tabs
-                        tabs={tabs.map(tab=>tab.title)}
+                        tabs={tabs?.map(tab => tab.title || "")}
                         contentClassName="p-4 border rounded-lg"
                     >
-                        {tabs.map((tab, index) => (
+                        {tabs?.map((tab, index) => (
                             <div>
                                 {tab.description}
                             </div>
@@ -260,14 +259,14 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
 
 
 // Main layout with scrollable sections
- function ScrollableSection({sectionData}: {sectionData: any}) {
-    const [activeSection, setActiveSection] = useState(1)
+function ScrollableSection({sectionData}: { sectionData?: FrameworkData }) {
+    const [activeSection, setActiveSection] = useState(0)
 
     return (
         <div className="flex w-full">
             {/* Left Panel */}
             <div className="w-1/2 overflow-y-auto">
-                {sectionData.map((section,index) => (
+                {sectionData?.map((section, index) => (
                     <ScrollSection key={section.id}
                                    section={section}
                                    activeSection={activeSection}
@@ -275,7 +274,7 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
                     >
                         <CardContent2
                             total={sectionData.length}
-                            index={index+1} title={section.title} tabs={section.tabs}  />
+                            index={index + 1} title={section.title} tabs={section.steps}/>
                     </ScrollSection>
                 ))}
             </div>
@@ -283,11 +282,15 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
             {/* Right Panel */}
             <div className="hidden md:flex w-1/2 sticky top-0 h-screen items-center justify-center p-8">
                 <div className={"relative h-1/2 w-full"}>
-                    <Image src={sectionData[activeSection - 1]?.image} alt={sectionData[activeSection - 1]?.title}
-                           objectFit={"cover"}
-                           sizes={"100"}
-                           fill={true}
-                            />
+                    {sectionData && (
+                        <Image
+                            src={sectionData[activeSection || 0]?.image}
+                            alt={sectionData[activeSection]?.title}
+                            objectFit={"cover"}
+                            sizes={"100"}
+                            fill={true}
+                        />
+                    )}
                 </div>
             </div>
         </div>
@@ -295,17 +298,17 @@ const CardContent2 = ({title, tabs, index,total}: {index: number,
 }
 
 
-const MobileSection = ({sectionData}: {sectionData: any}) => {
+const MobileSection = ({sectionData}: { sectionData?: FrameworkData }) => {
     return (
-        <div  className={"w-full h-fit block"}>
-            {sectionData.map((section,index) => (
+        <div className={"w-full h-fit block"}>
+            {sectionData?.map((section, index) => (
                 <div className={"min-h-svh h-auto mb-12 w-full"}>
                     <div className={"relative w-full h-auto aspect-square"}>
-                        <Image src={section.image} alt={section.title} fill={true} />
+                        <Image src={section.image} alt={section.title} fill={true}/>
                     </div>
-                    <CardContent2 index={index+1}
-                                  total={sectionData.length}
-                                  title={section.title} tabs={section.tabs}  />
+                    <CardContent2 index={index + 1}
+                                  total={sectionData?.length}
+                                  title={section.title} tabs={section?.steps}/>
                 </div>
             ))}
         </div>
@@ -316,66 +319,13 @@ const MobileSection = ({sectionData}: {sectionData: any}) => {
 // Page export
 export default function Example5() {
     const isDesktop = useMediaQuery({query: "(min-width: 728px)"})
-    const sectionData = [
-        {
-            id: 1,
-            title: "Recent Contacts",
-            description: "These are your most recent contacts.",
-            icon: <Clock className="h-6 w-6 text-primary/60"/>,
-            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-            tabs: [
-                {title:"title 1", description:"description 1"},
-                {title:"title 2", description:"description 2"},
-                {title:"title 3", description:"description 3"},
-                {title:"title 4", description:"description 4"},
-                {title:"title 5", description:"description 5"}
-            ]
-        },
-        {
-            id: 1,
-            title: "Recent Contacts",
-            description: "These are your most recent contacts.",
-            icon: <Clock className="h-6 w-6 text-primary/60"/>,
-            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-            tabs: [
-                {title:"title 1", description:"description 1"},
-                {title:"title 2", description:"description 2"},
-                {title:"title 3", description:"description 3"},
-                {title:"title 4", description:"description 4"},
-                {title:"title 5", description:"description 5"}
-            ]
-        },
-        // {
-        //     id: 2,
-        //     title: "Favorite Contacts",
-        //     description: "Your favorite contacts.",
-        //     image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-        //     icon: <div className="text-2xl">❤️</div>,
-        //     content: (
-        //         <p>
-        //             During the wireframing phase, we create structural blueprints. This outlines layout, user flow, and
-        //             interface elements before detailed design.
-        //         </p>
-        //     ),
-        // },
-        // {
-        //     id: 3,
-        //     title: "Other Contacts",
-        //     description: "Other miscellaneous contacts.",
-        //     image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-        //     icon: <User className="h-6 w-6 text-muted-foreground"/>,
-        //     content: (
-        //         <p>
-        //             The content phase focuses on developing messaging and visual assets, ensuring everything aligns with
-        //             brand and project goals.
-        //         </p>
-        //     ),
-        // },
-    ]
 
+    const homepage = useHomePageStore((state) => state.homepage)
+    const frameWork = homepage?.homepage.sections.framework
+    console.log("frameWork", frameWork)
     return (
         <main className="container mx-auto flex  min-h-screen flex-col items-center justify-between">
-            {isDesktop ? (<ScrollableSection sectionData={sectionData}/>) : (<MobileSection sectionData={sectionData}/>)}
+            {isDesktop ? (<ScrollableSection sectionData={frameWork}/>) : (<MobileSection sectionData={frameWork}/>)}
         </main>
     )
 }

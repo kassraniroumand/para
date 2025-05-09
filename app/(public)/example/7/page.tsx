@@ -1,29 +1,13 @@
 "use client"
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
-type CardItem = {
-    image: string
-    title: string
-    description_1: string;
-    description_2: string;
-    subTitle: string
-    subDescription_1: string
-    subDescription_2: string
-    items: CardSubItem[];
-};
-
-type CardSubItem = {
-    title: string;
-    description_1: string;
-    description_2: string;
-}
 
 interface LeftSectionProps {
     title: string
 }
 
 interface RightSectionProps {
-    card: CardItem;
+    service: HomepageData['homepage']['sections']['services'];
 }
 
 interface FixedScrollLayoutProps {
@@ -54,8 +38,10 @@ import Image from "next/image";
 import {AnimatePresence, useInView, motion} from "framer-motion";
 
 import {  useAnimation } from "framer-motion";
+import {useHomePageStore} from "@/app/store/useHomePageStore";
+import {HomepageData, servicesType} from "@/app/types";
 
-function SubItemAccordion({items}: {items:CardSubItem[]}) {
+function SubItemAccordion({items}: {items: servicesType['_type'][number]["services"][number][]}) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, amount: 0.2 });
     const [openItem, setOpenItem] = useState<string | null>(null);
@@ -90,7 +76,7 @@ function SubItemAccordion({items}: {items:CardSubItem[]}) {
                 value={openItem!!}
                 onValueChange={handleAccordionToggle}
             >
-                {items.map((item, index) => {
+                {items?.map((item, index) => {
                     const isOpen = openItem === `${item.title}-${index}`;
                     return (
                         <motion.div
@@ -133,11 +119,11 @@ function SubItemAccordion({items}: {items:CardSubItem[]}) {
 }
 
 // Right Section
-function RightSection({ card }: RightSectionProps) {
+function RightSection({ service }: { service: servicesType["_type"][number]}) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, amount: 0.2 });
     const controls = useAnimation();
-
+    console.log("service", service)
     useEffect(() => {
         if (isInView) {
             controls.start(i => ({
@@ -169,17 +155,18 @@ function RightSection({ card }: RightSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
             >
-                <Image src={card.image} alt={card.title} fill={true} objectFit={"cover"} />
+                <Image src={service?.serviceImage} alt={service?.serviceTitle} fill={true} objectFit={"cover"} />
             </motion.div>
+
+
 
             <motion.p
                 className={"text-base sm:text-lg font-normal opacity-80"}
                 custom={1}
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
-            >
-                {card.description_1}
-            </motion.p>
+                dangerouslySetInnerHTML={{ __html: service?.serviceDescription_1 }}
+            />
 
             <motion.p
                 className={"text-base sm:text-lg font-normal opacity-80"}
@@ -187,7 +174,7 @@ function RightSection({ card }: RightSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
             >
-                {card.description_2}
+                {service?.serviceDescription_2}
             </motion.p>
 
             <motion.h1
@@ -196,7 +183,7 @@ function RightSection({ card }: RightSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
             >
-                {card.subTitle}
+                {service?.serviceTitle_2}
             </motion.h1>
 
             <motion.p
@@ -205,7 +192,7 @@ function RightSection({ card }: RightSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
             >
-                {card.subDescription_1}
+                {service?.serviceDescription_3}
             </motion.p>
 
             <motion.p
@@ -214,10 +201,10 @@ function RightSection({ card }: RightSectionProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={controls}
             >
-                {card.subDescription_2}
+                {service?.serviceDescription_4}
             </motion.p>
 
-            <SubItemAccordion items={card.items} />
+            <SubItemAccordion items={service?.services} />
         </div>
     );
 }
@@ -243,97 +230,15 @@ function FixedScrollLayout({
 // Parent Component
 export default function Example7() {
 
-    const cards: CardItem[] = [
-        {
-            title: `Branding`,
-            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-            description_1: `Recognised as the no.1 ranked UK web design agency on Clutch out of 7,000+ providers, we’re leading experts in crafting high-performance, unique, and scalable websites that stand out.`,
-            description_2: `As an award-winning London web design agency, our team takes a thorough and creative approach to every web design project, ensuring we build a website that’s perfectly tailored to your needs.`,
-            subTitle: "Fully Bespoke Web Design",
-            subDescription_1: "Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-            subDescription_2: "We focus on delivering a custom-built website that’s fully aligned with your goals and reflects your brands uniqueness.",
-            items: [
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                }
-            ]
-        },
-        {
-            title: `Branding`,
-            image: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-            description_1: `Recognised as the no.1 ranked UK web design agency on Clutch out of 7,000+ providers, we’re leading experts in crafting high-performance, unique, and scalable websites that stand out.`,
-            description_2: `As an award-winning London web design agency, our team takes a thorough and creative approach to every web design project, ensuring we build a website that’s perfectly tailored to your needs.`,
-            subTitle: "Fully Bespoke Web Design",
-            subDescription_1: "Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-            subDescription_2: "We focus on delivering a custom-built website that’s fully aligned with your goals and reflects your brands uniqueness.",
-            items: [
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                },
-                {
-                    title:"Fully Bespoke web design",
-                    description_1:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!",
-                    description_2:"Our London based web design team creates websites tailored to your specific needs with zero templates, site builders, or boring designs!"
-                }
-            ]
-        },
-    ]
 
+    const homepage = useHomePageStore((state) => state.homepage);
+    const services = homepage?.homepage.sections.services;
     return (
         <div className={"container mx-auto"}>
-            {cards.map((card) => (
+            {services?.map((service) => (
                 <FixedScrollLayout
-                    leftSection={<LeftSection title={card.title} />}
-                    rightSection={<RightSection card={card} />}
+                    leftSection={<LeftSection title={service.serviceTitle} />}
+                    rightSection={<RightSection service={service} />}
                 />
             ))}
         </div>

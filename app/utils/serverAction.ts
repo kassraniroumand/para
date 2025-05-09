@@ -1,10 +1,23 @@
 'use server'
 
-import {apiClient} from "@/app/utils/api-client";
-import { HomepageData } from "@/types/homepage";
+import {apiClient, publicApiClient} from "@/app/utils/api-client";
+import {HomepageData, PortfolioPage, PortfolioParameter} from "@/app/types";
 
-export async function getHomePage() {
-    const response = await apiClient.get<any, HomepageData>("/")
-    console.log(response)
-    return response
+export async function getHomePage() : Promise<HomepageData> {
+    const response = await publicApiClient.get("/")
+    return response.data
+}
+
+export async function getPortfolioPage({isFeatured}: PortfolioParameter):  Promise<PortfolioPage> {
+    try {
+        const response = await apiClient.get(
+            "/get-portfolio", {
+                params: {
+                    isFeatured: isFeatured
+                }
+            });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 }

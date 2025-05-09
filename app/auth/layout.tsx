@@ -2,8 +2,13 @@
 
 import { useAuth } from '@/app/auth/auth-provider';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './auth.css';
+import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import {AppSidebar} from "@/app/auth/component/app-sidebar";
+import {Button} from "@/components/ui/button";
+import {Menu} from "lucide-react";
+import {Separator} from "@/components/ui/separator";
 
 export default function AuthLayout({
   children,
@@ -42,5 +47,16 @@ export default function AuthLayout({
   }
 
   // User is authenticated, render the protected content
-  return <div className="auth-protected-layout">{children}</div>;
+  return <div className="w-svw">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+        </header>
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+  </div>;
 }
