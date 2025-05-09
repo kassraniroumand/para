@@ -49,7 +49,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  console.log("user", user);
 
   // Helper to store tokens in cookies
   const storeTokensInCookies = (accessToken: string, idToken: string, refreshToken?: string) => {
@@ -124,7 +123,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       // This would normally use Amplify's fetchUserAttributes, but we're simplifying
       const currentUser = await getCurrentUser();
-      console.log("currentUser", currentUser);
       return currentUser.signInDetails?.loginId
         ? { email: currentUser.signInDetails.loginId }
         : {};

@@ -19,15 +19,13 @@ apiClient.interceptors.request.use(
       // const sessionFromServer = await fetchSessionFromServer()
       const user = await fetchAuthSession()
       const token = user.tokens?.accessToken.toString();
-      // console.log('session', user);
-      // console.log("token", token);
+
       if (token) {
         config.headers.Authorization = `${token}`;
       }
       return config;
     } catch (error) {
       // If there's an error getting the token, proceed without authentication
-      console.error('Error setting auth token:', error);
       return config;
     }
   },

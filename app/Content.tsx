@@ -51,13 +51,8 @@ const Content = () => {
             {/*{isLoading && (<div>loading</div>)}*/}
             <Header />
             <TextScroll />
-            {/*<SubHeaderBanner data={data.homepage.statistics} />*/}
-            {/* services */}
             <Example7 />
-            {/* steps */}
             <Example8 />
-            {/*<StepService data={data.homepage.framework}/>*/}
-
             <Example1/>
             <Example2 />
             <Example5 />

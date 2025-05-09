@@ -123,7 +123,6 @@ function RightSection({ service }: { service: servicesType["_type"][number]}) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, amount: 0.2 });
     const controls = useAnimation();
-    console.log("service", service)
     useEffect(() => {
         if (isInView) {
             controls.start(i => ({

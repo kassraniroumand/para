@@ -36,7 +36,6 @@ export default function MultiStepForm() {
     // Update form values if initialData changes
     useEffect(() => {
         if (initialData) {
-            console.log("Resetting form with data:", initialData);
             form.reset(initialData);
         }
     }, [initialData, form]);
@@ -56,7 +55,6 @@ export default function MultiStepForm() {
     };
 
     const onSubmit = async (data: z.infer<typeof homepageSchema>) => {
-        console.log("data", data);
         try {
             setIsSubmitting(true);
 

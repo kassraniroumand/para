@@ -17,6 +17,7 @@ interface CardProps {
     activeSection: number,
     setActiveSection: Dispatch<SetStateAction<number>>
     headerText?: string
+    tags:  {title: string}[]
 }
 
 // Also update the Card component to fix positioning issues
@@ -24,6 +25,7 @@ const Card = ({
                   title,
                   description,
                   image,
+                  tags,
                   link,
                   color,
                   i,
@@ -45,7 +47,6 @@ const Card = ({
         query: '(min-width: 728px)'
     })
 
-
     return (
         <div ref={container} className="sticky h-svh flex flex-col justify-center items-center mx-1 sm:mx-10"
              style={{top: isDesktopOrLaptop ? `0vh` : `0vh`}}
@@ -55,26 +56,18 @@ const Card = ({
                 style={{backgroundColor: color}}
             >
                 <div className="flex flex-col sm:flex-row md:flex-row h-full">
-                    {/*<div className="order-2 w-full sm:w-1/2 h-1/2 sm:h-full relative flex flex-col justify-center items-center gap-12 px-1 sm:px-24">*/}
-                    {/*    <h2 className="font-sans text-center m-0 text-3xl font-bold capitalize">{title}</h2>*/}
-                    {/*    <p className="text-base">*/}
-                    {/*        {description}*/}
-                    {/*    </p>*/}
-                    {/*</div>*/}
+                    <div className={"order-2 w-full sm:w-1/2 h-full flex flex-col justify-center  sm:justify-center items-center px-4 gap-5 "}>
+                        <p className={"text-4xl font-medium opacity-80 text-center"}>{title}</p>
+                        <p className={"text-sm font-medium opacity-80"}>{description}</p>
+                        <div className={"grid grid-cols-2 grid-rows-2 gap-4"}>
+                            {tags.map((tag) => (
+                                <p className={"border-1 border-black/10 p-4 flex flex-row justify-center items-center  rounded-xl  opacity-80 break-words"}>{tag.title}</p>
+                            ))}
+                        </div>
+                    </div>
                     <div className="order-1 relative w-full h-full rounded-xl  sm:h-full overflow-hidden">
                         <motion.div className="relative w-full h-full overflow-hidden">
                             <Image sizes={"100"} fill src={image} alt={`Project by ${title}`} objectFit={"cover"}/>
-                            <div className={"absolute w-full h-full top-0 left-0 bg-black opacity-70"}></div>
-                            <div className={"absolute top-0 left-0 w-full sm:w-1/2 h-full flex flex-col justify-end  sm:justify-center items-center gap-10 pb-14 sm:pb-0"}>
-                                <p className={"text-white text-4xl font-medium opacity-80"}>sdafjlksjdfl</p>
-                                <p className={"text-white text-2xl font-medium opacity-80"}>sdafjlksjdfl</p>
-                                <div className={"grid grid-cols-2 grid-rows-2 gap-4 px-4"}>
-                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>sdaf</p>
-                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>asfd</p>
-                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>fas</p>
-                                    <p className={"border-1 border-white/10 p-5 rounded-xl text-white opacity-80 break-words text-center"}>fsdaasdf</p>
-                                </div>
-                            </div>
                         </motion.div>
                     </div>
                 </div>
@@ -90,6 +83,7 @@ const Example1 = () => {
     // Access the state
     const data = homepage?.homepage.sections.advantage
     const [activeSection, setActiveSection] = useState(1)
+    console.log("data", data)
 
     const container = useRef(null)
 
@@ -106,7 +100,6 @@ const Example1 = () => {
         }
         return "End of Projects"
     }
-
     return (
         <div className="min-h-screen">
             {/* Responsive Layout */}
@@ -136,6 +129,7 @@ const Example1 = () => {
                         {data?.map((project, index) => (
                             <Card key={`p_${index}`}
                                   section={index + 1}
+                                tags={project.tags}
                                   activeSection={activeSection}
                                   setActiveSection={setActiveSection}
                                   // color={project?.color || ""}
@@ -143,6 +137,7 @@ const Example1 = () => {
                                   // link={project.link || "/"}
                                   title={project.title || ""}
                                   image={project.image || ""}
+
                                   i={index}
                                   headerText={getNextProjectHeader(index)}/>
                         ))}

@@ -53,8 +53,7 @@ export default function LoginPage() {
 
     try {
       const result = await login(values.email, values.password);
-      console.log("isAdmin", isAdmin)
-      console.log("result", result);
+
 
       if (result) {
         // Redirect to dashboard or home page

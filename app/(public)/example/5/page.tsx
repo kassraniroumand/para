@@ -322,7 +322,6 @@ export default function Example5() {
 
     const homepage = useHomePageStore((state) => state.homepage)
     const frameWork = homepage?.homepage.sections.framework
-    console.log("frameWork", frameWork)
     return (
         <main className="container mx-auto flex  min-h-screen flex-col items-center justify-between">
             {isDesktop ? (<ScrollableSection sectionData={frameWork}/>) : (<MobileSection sectionData={frameWork}/>)}

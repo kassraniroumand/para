@@ -10,7 +10,7 @@ const ImageUploader = ({ value, onChange }: { value: string, onChange: (url: str
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
     if (!file) return
-    console.log("value", value);
+
 
     try {
       // Step 1: Get presigned URL from backend

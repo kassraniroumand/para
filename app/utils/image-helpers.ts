@@ -52,10 +52,8 @@ export const uploadFileToS3 = async (file: File): Promise<string> => {
 
     // Return the full S3 URL of the uploaded file
     const s3Url = `https://${bucketName}.s3.us-east-1.amazonaws.com/${key}`;
-    console.log("File uploaded successfully:", s3Url);
     return s3Url;
   } catch (error) {
-    console.error('Error uploading file to S3:', error);
     throw error;
   }
 };
@@ -126,7 +124,6 @@ export const processFormImages = async (data: any): Promise<any> => {
         try {
           // Convert base64 to File and upload to S3
           const filename = `${key}-${Date.now()}.jpg`;
-          console.log(`Processing image field: ${key}, creating file: ${filename}`);
           const file = base64ToFile(obj[key], filename);
           const s3Url = await uploadFileToS3(file);
 

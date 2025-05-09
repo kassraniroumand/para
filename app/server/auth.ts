@@ -3,7 +3,6 @@ import {getUserDetails} from "@/app/utils/auth-utils";
 export const isAdmin = async () => {
   try {
     const user = await getUserDetails();
-    console.log("user isAdmin", user);
     // if (!user) {
       return { isAdmin: false };
     // }

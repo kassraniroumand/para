@@ -41,11 +41,9 @@ const PortfolioForm = () => {
                 return;
             }
 
-            console.log("Submitting form data:", data);
 
             // Submit data to server
             const response = await mutateAsync(data);
-            console.log("Response:", response);
             await refetch()
 
 

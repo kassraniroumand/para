@@ -23,6 +23,5 @@ export const fetchUserFromServer = async () => {
         nextServerContext: { cookies },
         operation: (contextSpec) => getCurrentUser(contextSpec),
     });
-    console.log("currentUser", currentUser);
     return currentUser;
 };

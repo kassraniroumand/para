@@ -30,14 +30,7 @@ export default function AuthProfilePage() {
         setLoading(true);
         // Replace 'users/profile' with your actual endpoint
         const data = await apiClient.get('/');
-        console.log('data', data);
-        // setProfileData(data);
 
-        // Populate form with server data if available
-        // if (data) {
-        //   setDisplayName(data.username || user?.username || '');
-        //   setEmail(data.email || user?.email || '');
-        // }
       } catch (err) {
         console.error('Error fetching profile data:', err);
         setError('Failed to load profile data');

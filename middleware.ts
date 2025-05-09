@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
   try {
     // Get access token from cookie
     const accessTokenCookie = request.cookies.get(ACCESS_TOKEN_COOKIE);
-    console.log("accessTokenCookie", accessTokenCookie);
 
     if (!accessTokenCookie) {
       // No token found, redirect to login
@@ -56,7 +55,6 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
       }
 
-      console.log("isInAdminGroup", isInAdminGroup);
       // Admin access granted, proceed
       return NextResponse.next();
     } catch (error) {
