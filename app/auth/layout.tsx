@@ -55,7 +55,9 @@ export default function AuthLayout({
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
         </header>
-        {children}
+        <div className={"p-12"}>
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   </div>;

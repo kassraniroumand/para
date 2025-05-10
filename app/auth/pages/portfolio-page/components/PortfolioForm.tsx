@@ -68,7 +68,7 @@ const PortfolioForm = () => {
             <FormProvider {...form}>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-                        <SitesList/>
+                        <SitesList />
                         <div className="flex justify-end">
                             <Button
                                 type="submit"

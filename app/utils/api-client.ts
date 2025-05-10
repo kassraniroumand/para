@@ -4,7 +4,7 @@ import { fetchAuthSession } from 'aws-amplify/auth';
 
 // Create a base axios instance
 export const apiClient = axios.create({
-  baseURL: "https://73r9n8ez95.execute-api.us-east-1.amazonaws.com/Prod",
+  baseURL: "https://d2uy8uqrvj.execute-api.us-east-1.amazonaws.com/Prod",
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -12,30 +12,30 @@ export const apiClient = axios.create({
 });
 
 // Add a request interceptor to attach authentication token
-apiClient.interceptors.request.use(
-  async (config) => {
-    try {
-      // const session = await fetchAuthSession();
-      // const sessionFromServer = await fetchSessionFromServer()
-      const user = await fetchAuthSession()
-      const token = user.tokens?.accessToken.toString();
-
-      if (token) {
-        config.headers.Authorization = `${token}`;
-      }
-      return config;
-    } catch (error) {
-      // If there's an error getting the token, proceed without authentication
-      return config;
-    }
-  },
-  (error) => Promise.reject(error)
-);
+// apiClient.interceptors.request.use(
+//   async (config) => {
+//     try {
+//       // const session = await fetchAuthSession();
+//       // const sessionFromServer = await fetchSessionFromServer()
+//       const user = await fetchAuthSession()
+//       const token = user.tokens?.accessToken.toString();
+//
+//       if (token) {
+//         config.headers.Authorization = `${token}`;
+//       }
+//       return config;
+//     } catch (error) {
+//       // If there's an error getting the token, proceed without authentication
+//       return config;
+//     }
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 
 
 export const publicApiClient = axios.create({
-  baseURL: "https://73r9n8ez95.execute-api.us-east-1.amazonaws.com/Prod",
+  baseURL: "https://d2uy8uqrvj.execute-api.us-east-1.amazonaws.com/Prod",
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

@@ -165,14 +165,16 @@ export default function Header() {
 
                 {/* Buttons - Stacked on mobile, side by side on desktop */}
                 <div className="flex flex-row gap-4 justify-center ">
-                    <a
-                        href="#contact"
+                    <Link
+                        passHref={true}
+                        // href="#work"
+                        href="https://calendly.com/me-kassraniroumand/30min?month=2025-05&date=2025-05-14"
                         className="text-base px-8 flex flex-col justify-center items-center  rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors"
                     >
                         Book A Free Call
-                    </a>
+                    </Link>
                     <a
-                        href="#work"
+                        href="/portfolio"
                         className="px-8 py-4 rounded-full bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
                     >
                         View Work
