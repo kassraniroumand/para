@@ -13,6 +13,7 @@ import Example1 from "@/app/(public)/example/1/page";
 import Example8 from "@/app/(public)/example/8/page";
 import Example5 from "@/app/(public)/example/5/page";
 import Example2 from "@/app/(public)/example/2/page";
+import Projects from "@/components/custom/Projects";
 
 
 const Content = () => {

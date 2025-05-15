@@ -11,12 +11,12 @@ import {
 } from "@/app/types";
 import {apiClientBlog} from "@/app/utils/api-client-blog";
 
-export async function getHomePage() : Promise<HomepageData> {
+export async function getHomePageClient() : Promise<HomepageData> {
     const response = await publicApiClient.get("/")
     return response.data
 }
 
-export async function getPortfolioPage({isFeatured}: PortfolioParameter):  Promise<PortfolioPage> {
+export async function getPortfolioPageClient({isFeatured}: PortfolioParameter):  Promise<PortfolioPage> {
     try {
         const response = await apiClient.get(
             "/get-portfolio", {

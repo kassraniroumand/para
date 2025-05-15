@@ -1,113 +1,129 @@
 "use client"
 
-import * as React from "react"
-import Link from "next/link"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Menu, X } from "lucide-react"
+import Link from "next/link";
 
-import { cn } from "@/lib/utils"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+export default function HamburgerMenu() {
+  const [isOpen, setIsOpen] = useState(false)
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description:
-        "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
 
-export default function NavigationMenuDemo() {
+  const mainLinks = [
+    { label: "Home", href: "/" },
+    { label: "Our Work", href: "/portfolio" },
+    { label: "Our Blog", href: "/blogs" },
+    // { label: "Contact", href: "#" },
+    { label: "Login", href: "/login" },
+  ]
+
+  const serviceLinks = [
+    { label: "Websites", href: "#" },
+    { label: "eCommerce", href: "#" },
+    { label: "Digital Marketing", href: "#" },
+    { label: "WordPress", href: "#" },
+    { label: "Branding", href: "#" },
+    { label: "Mobile Apps", href: "#" },
+    { label: "Digital Transformation", href: "#" },
+  ]
+
+  const menuVariants = {
+    closed: {
+      x: "-100%",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+    open: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const linkVariants = {
+    closed: { x: -20, opacity: 0 },
+    open: { x: 0, opacity: 1 },
+  }
+
   return (
-      <div className="border-b border-gray-50 border-2 h-24 w-full fixed">
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
-                <NavigationMenuLink  className={`${navigationMenuTriggerStyle()} bg-red-200"`}>
-                  Documentation
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                  {components.map((component) => (
-                      <ListItem
-                          key={component.title}
-                          title={component.title}
-                          href={component.href}
-                      >
-                        {component.description}
-                      </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
+      <>
+        {/* Hamburger Button */}
+        <button
+            onClick={toggleMenu}
+            className="z-40 p-2 focus:outline-none"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+        >
+          <Menu className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Menu Panel */}
+        <AnimatePresence>
+          {isOpen && (
+              <motion.div
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  variants={menuVariants}
+                  className="fixed inset-0 bg-black text-white z-50 overflow-y-auto"
+              >
+                <div className="p-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-bold">Menu</h2>
+                    <button onClick={toggleMenu} aria-label="Close menu">
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  <nav className="mt-16">
+                    <ul className="space-y-6 text-2xl">
+                      {mainLinks.map((link) => (
+                          <motion.li key={link.label} variants={linkVariants}>
+                            <Link
+                                href={link.href}
+                                className="block hover:text-gray-300 transition-colors"
+                                onClick={(e) => {
+                                  // e.preventDefault()
+                                  toggleMenu()
+                                }}
+                            >
+                              {link.label}
+                            </Link>
+                          </motion.li>
+                      ))}
+                    </ul>
+
+                    <ul className="mt-8 space-y-4 text-sm text-gray-400">
+                      {serviceLinks.map((link) => (
+                          <motion.li key={link.label} variants={linkVariants}>
+                            <a
+                                href={link.href}
+                                className="block hover:text-white transition-colors"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  toggleMenu()
+                                }}
+                            >
+                              {link.label}
+                            </a>
+                          </motion.li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              </motion.div>
+          )}
+        </AnimatePresence>
+      </>
   )
 }
-
-const ListItem = React.forwardRef<
-    React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-              ref={ref}
-              className={cn(
-                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                  className
-              )}
-              {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-              {children}
-            </p>
-          </a>
-        </NavigationMenuLink>
-      </li>
-  )
-})
-ListItem.displayName = "ListItem"

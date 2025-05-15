@@ -3,6 +3,7 @@ import {z} from 'zod';
 
 export const PostCreateDTOSchema = z.object({
     title: z.string().min(1, "Title is required"),
+    description: z.string().min(1, "Description is required"),
     content: z.string().min(1, "Content is required"),
     image: z.string().url("Invalid URL").optional(),
     authorId: z.string().optional(),
@@ -23,6 +24,7 @@ export const PostCreateDTOSchema = z.object({
 
 export const postSchema = z.object({
     title: z.string().min(1, "Title is required").max(100, "Title is too long"),
+    description: z.string().min(1, "Description is required"),
     content: z.string().min(1, "Content is required"),
     image: z.string().url("Must be a valid URL").optional(),
     authorId: z.string().min(1, "Author is required"),

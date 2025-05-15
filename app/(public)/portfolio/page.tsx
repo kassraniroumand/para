@@ -2,38 +2,21 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from "next/image";
+import {useGetPortfolioPage} from "@/app/hooks/usePortfolioPage";
 
 export default function CenteredScrollContent() {
     const containerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    
 
-    // Content with more engaging information and better organized content
-    const contents = [
-        {
-            title: "Sustainable Architecture",
-            description: "Modern buildings designed with environmental impact in mind, combining aesthetics with eco-friendly innovation. These structures represent the future of urban development.",
-            color: "bg-emerald-600",
-            imageUrl: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp" // Using placeholder for demo
-        },
-        {
-            title: "Digital Transformation",
-            description: "How businesses are evolving in the digital age, adopting new technologies to improve efficiency and create better customer experiences across industries.",
-            color: "bg-blue-700",
-            imageUrl: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp" // Using placeholder for demo
-        },
-        {
-            title: "Future of Transportation",
-            description: "Exploring electric vehicles, hyperloop concepts, and autonomous driving systems that are revolutionizing how we move from place to place.",
-            color: "bg-indigo-700",
-            imageUrl: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp" // Using placeholder for demo
-        },
-        {
-            title: "Artificial Intelligence",
-            description: "The rapid advancement of AI technologies and their growing impact on healthcare, education, creative industries, and everyday life.",
-            color: "bg-purple-700",
-            imageUrl: "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp" // Using placeholder for demo
-        }
-    ];
+    const {data: portfolios} = useGetPortfolioPage();
+    const contents = portfolios.portfolioPage.sections.sites.map((item) => ({
+        title: item.title,
+        description: item.description[0],
+        color: "bg-purple-700",
+        imageUrl: item.image,
+    }))
+
 
     // Use Framer Motion's useScroll hook
     const { scrollYProgress } = useScroll();

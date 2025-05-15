@@ -80,6 +80,28 @@ const GeneralBlogSection = () => {
                         )}
                     />
                     <FormField
+                        control={control}
+                        name="description"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel className="text-sm font-medium capitalize">description</FormLabel>
+                                <FormControl>
+                                    <div className="relative">
+                                        <div
+                                            className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <ListCollapse className="h-4 w-4 text-muted-foreground"/>
+                                        </div>
+                                        <Input
+                                            {...field}
+                                            className="pl-10 bg-white dark:bg-black border-black/20 dark:border-white/20 transition-all duration-200 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:border-black dark:focus-visible:border-white"
+                                        />
+                                    </div>
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
                         name="slug"
                         control={control}
                         render={({field}) => (

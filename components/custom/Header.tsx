@@ -1,190 +1,204 @@
 "use client"
-import Image from "next/image";
-import React, {useEffect, useState} from "react";
-import {useMediaQuery} from "react-responsive";
-import Autoplay from "embla-carousel-autoplay"
 
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
-import {ArrowUpRight} from "lucide-react";
-import {cn} from "@/lib/utils";
-import Link from "next/link";
-import {HomePageState, useHomePageStore, usePortfolioPageStore} from "@/app/store/useHomePageStore";
+import { useRef } from "react"
+import Link from "next/link"
+import { motion, useScroll, useTransform } from "framer-motion"
 
-interface Card08Props {
-    title?: string
-    subtitle?: string
-    image?: string
-    badge?: {
-        text: string
-        variant: "pink" | "indigo" | "orange"
-    }
-    href?: string
-}
-
-function Card08({
-                    title = "Modern Design Systems",
-                    subtitle = "Explore the fundamentals of contemporary UI design",
-                    image = "https://para-uploads-12345.s3.us-east-1.amazonaws.com/original-6d1d64057ad135b74acc165d79083f65.webp",
-                    badge = {text: "New", variant: "orange"},
-                    href = "https://kokonutui.com/",
-                }: Card08Props) {
-    return (
-        <Link href={href} className="block w-full h-full group">
-            <div
-                className={cn(
-                    "relative overflow-hidden rounded-2xl",
-                    "dark:bg-zinc-900/80",
-                    "shadow-xs",
-                    "transition-all duration-300",
-                    "hover:shadow-md",
-                    "hover:border-zinc-300/50 dark:hover:border-zinc-700/50",
-                )}
-            >
-                <div className="relative w-full h-[37svh] sm:h-[35svh] aspect-square overflow-hidden">
-                    <Image
-                        src={image}
-                        alt={title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                    />
-                </div>
-
-                <div className={cn("absolute inset-0", "bg-linear-to-t from-black/90 via-black/40 to-transparent")}/>
-
-                <div className="absolute top-3 right-3">
-          <span
-              className={cn(
-                  "px-2.5 py-1 rounded-lg text-xs font-medium",
-                  "bg-white/90 text-zinc-800",
-                  "dark:bg-zinc-900/90 dark:text-zinc-200",
-                  "backdrop-blur-md",
-                  "shadow-xs",
-                  "border border-white/20 dark:border-zinc-800/50",
-              )}
-          >
-            {badge.text}
-          </span>
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <div className="flex items-center justify-between gap-3">
-                        <div className="space-y-1.5">
-                            <h3 className="text-lg font-semibold text-white dark:text-zinc-100 leading-snug">{title}</h3>
-                            <p className="text-sm text-zinc-200 dark:text-zinc-300 line-clamp-2">{subtitle}</p>
-                        </div>
-                        <div
-                            className={cn(
-                                "p-2 rounded-full",
-                                "bg-white/10 dark:bg-zinc-800/50",
-                                "backdrop-blur-md",
-                                "group-hover:bg-white/20 dark:group-hover:bg-zinc-700/50",
-                                "transition-colors duration-300 group",
-                            )}
-                        >
-                            <ArrowUpRight
-                                className="w-4 h-4 text-white group-hover:-rotate-12 transition-transform duration-300"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Link>
-    )
-}
-
-
-export function CarouselDemo() {
-    const porfolioItems = usePortfolioPageStore((state) => state.portfolio?.portfolioPage.sections.sites)
-
-    return (
-        <Carousel
-            plugins={[
-                Autoplay({
-                    delay: 2000,
-                }),
-            ]}
-            className="w-screen h-full py-4 sm:py-4">
-            <CarouselContent className="h-full">
-                {porfolioItems?.map((item, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 h-full">
-                        <div className="h-full">
-                            <div className="relative h-fit">
-                                <div className={"relative w-full h-full rounded-xl overflow-hidden"}>
-                                    <Card08
-                                        title={item.title}
-                                        subtitle={item.description[0]}
-                                        image={item.image}
-                                        href={item.link}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10"/>
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10"/>
-        </Carousel>
-    )
-}
+import { useHomePageStore } from "@/app/store/useHomePageStore"
+import Projects from "@/components/custom/Projects"
 
 export default function Header() {
+    const homepage = useHomePageStore((state) => state.homepage)
+    const ref = useRef<HTMLElement>(null)
 
-    const homepage = useHomePageStore((state) => state.homepage);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 80%", "start center"],
+    })
+
+    const opacity = useTransform(scrollYProgress, [0.4, 1], [0, 1])
+
+    // Animation variants for staggered animations
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.1,
+            },
+        },
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: "easeOut" },
+        },
+    }
 
     return (
-        <main className="flex flex-col items-center justify-center ">
-            <section className="h-[60svh] flex flex-col items-center justify-center">
-                {/* Heading - Different layouts for mobile and desktop */}
-                <h1 className="font-bold tracking-tight text-black mb-6">
-                    {/* Mobile heading (stacked) */}
-                    <span className="block text-3xl sm:text-4xl md:hidden">Design, Development &<br/>
+        <main className="flex flex-col items-center justify-center mt-20 relative">
+            {/* Hero Section */}
+            <motion.section
+                className="h-[60svh] flex flex-col items-center justify-center relative z-10 text-center px-4"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+            >
+                <motion.h1 className="font-bold tracking-tight text-black mb-6" variants={itemVariants}>
+          <span className="block text-3xl sm:text-4xl md:hidden">
+            Design, Development &<br />
             Marketing for Agencies,
-            <br/>
+            <br />
             Startups & Solo Founders.
           </span>
-
-                    {/* Desktop heading (with different line breaks) */}
                     <span className="hidden md:block md:text-5xl lg:text-6xl">
             Design, Development & Marketing for
-            <br/>
+            <br />
             Agencies, Startups & Solo Founders.
           </span>
-                </h1>
+                </motion.h1>
 
-                <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12 px-10">
-                    {/*{homepage?.section.hero.description}*/}
-                    {homepage?.homepage.sections.hero.description}
-                </p>
+                <motion.p
+                    className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12"
+                    variants={itemVariants}
+                >
+                    {homepage?.homepage.sections.hero.description ||
+                        "We help businesses create beautiful, functional digital experiences that drive growth and engagement."}
+                </motion.p>
 
-                {/* Buttons - Stacked on mobile, side by side on desktop */}
-                <div className="flex flex-row gap-4 justify-center ">
+                <motion.div className="flex flex-col sm:flex-row gap-4 justify-center items-center" variants={itemVariants}>
                     <Link
-                        passHref={true}
-                        // href="#work"
                         href="https://calendly.com/me-kassraniroumand/30min?month=2025-05&date=2025-05-14"
-                        className="text-base px-8 flex flex-col justify-center items-center  rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors"
+                        className="px-8 py-4 rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2"
+                        aria-label="Book a free call"
                     >
                         Book A Free Call
                     </Link>
-                    <a
+                    <Link
                         href="/portfolio"
-                        className="px-8 py-4 rounded-full bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
+                        className="px-8 py-4 rounded-full bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-50 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
+                        aria-label="View work portfolio"
                     >
                         View Work
-                    </a>
-                </div>
-            </section>
-            <div className={"h-auto w-full bg-black"}>
-                <CarouselDemo/>
-            </div>
+                    </Link>
+                </motion.div>
+            </motion.section>
 
+            {/* Projects Section */}
+            <motion.section
+                ref={ref}
+                className="w-full flex text-white text-4xl font-bold z-20"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+            >
+                <div className="w-full relative">
+                    {/* Content wrapper that determines the height */}
+                    <div className="relative z-10 w-full container mx-auto">
+                        <Projects />
+                    </div>
+                    {/* Background with opacity animation that matches content height */}
+                    <motion.div style={{ opacity }} className="absolute top-0 left-0 w-full h-full bg-black z-0" />
+                </div>
+            </motion.section>
         </main>
     )
 }
+
+
+// "use client"
+// import Image from "next/image";
+// import React, {useEffect, useRef, useState} from "react";
+// import {useMediaQuery} from "react-responsive";
+// import Autoplay from "embla-carousel-autoplay"
+//
+// import {
+//     Carousel,
+//     CarouselContent,
+//     CarouselItem,
+//     CarouselNext,
+//     CarouselPrevious,
+// } from "@/components/ui/carousel"
+// import {ArrowUpRight} from "lucide-react";
+// import {cn} from "@/lib/utils";
+// import Link from "next/link";
+// import {HomePageState, useHomePageStore, usePortfolioPageStore} from "@/app/store/useHomePageStore";
+// import Projects from "@/components/custom/Projects";
+// import {motion, useScroll, useTransform} from "framer-motion";
+//
+//
+// export default function Header() {
+//
+//     const homepage = useHomePageStore((state) => state.homepage);
+//     const ref = useRef(null);
+//     const { scrollYProgress } = useScroll({
+//         target: ref,
+//         offset: ["start 20%", "center center"], // Start at 5% visible, end when centered
+//     });
+//     const opacity = useTransform(
+//         scrollYProgress,
+//         [0, 1],
+//         [0, 1]
+//     );
+//
+//
+//     return (
+//         <main className="flex flex-col items-center justify-center mt-20 relative">
+//             <section className="h-[60svh] flex flex-col items-center justify-center  z-10 relative">
+//                 {/* Heading - Different layouts for mobile and desktop */}
+//                 <h1 className="font-bold tracking-tight text-black mb-6">
+//                     {/* Mobile heading (stacked) */}
+//                     <span className="block text-3xl sm:text-4xl md:hidden">Design, Development &<br/>
+//             Marketing for Agencies,
+//             <br/>
+//             Startups & Solo Founders.
+//           </span>
+//
+//                     {/* Desktop heading (with different line breaks) */}
+//                     <span className="hidden md:block md:text-5xl lg:text-6xl">
+//             Design, Development & Marketing for
+//             <br/>
+//             Agencies, Startups & Solo Founders.
+//           </span>
+//                 </h1>
+//
+//                 <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12 px-10">
+//                     {/*{homepage?.section.hero.description}*/}
+//                     {homepage?.homepage.sections.hero.description}
+//                 </p>
+//
+//                 {/* Buttons - Stacked on mobile, side by side on desktop */}
+//                 <div className="flex flex-row gap-4 justify-center ">
+//                     <Link
+//                         passHref={true}
+//                         // href="#work"
+//                         href="https://calendly.com/me-kassraniroumand/30min?month=2025-05&date=2025-05-14"
+//                         className="text-base px-8 flex flex-col justify-center items-center  rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-colors"
+//                     >
+//                         Book A Free Call
+//                     </Link>
+//                     <a
+//                         href="/portfolio"
+//                         className="px-8 py-4 rounded-full bg-white text-gray-900 font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
+//                     >
+//                         View Work
+//                     </a>
+//                 </div>
+//             </section>
+//             <motion.section
+//                 ref={ref}
+//
+//                 className="w-svw h-fit flex  text-white text-4xl font-bold  z-20"
+//             >
+//                 <motion.div style={{ opacity }} className="w-full h-full bg-black">
+//                     <Projects />
+//                 </motion.div>
+//             </motion.section>
+//         </main>
+//     )
+// }

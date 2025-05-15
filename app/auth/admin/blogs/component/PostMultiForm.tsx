@@ -23,6 +23,7 @@ const PostMultiForm  = ({post}: {post:Post | null}) => {
     const form = useForm<postInputType>({
         defaultValues: {
             title: "",
+            description: "",
             content: "",
             isFeatured: false,
             isPublished: false,
@@ -38,6 +39,7 @@ const PostMultiForm  = ({post}: {post:Post | null}) => {
     useEffect(()=>{
         form.reset({
             title: post?.title,
+            description: post?.description,
             content: post?.content,
             isFeatured: post?.isFeatured,
             isPublished: post?.isPublished,

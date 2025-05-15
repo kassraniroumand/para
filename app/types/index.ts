@@ -49,6 +49,7 @@ interface BaseModel {
 // Post model
 interface Post extends BaseModel {
     title: string;
+    description: string;
     content: string;
     image: string;
     authorId: string;

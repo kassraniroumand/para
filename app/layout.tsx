@@ -6,7 +6,8 @@ import {AuthProvider} from "@/app/auth/auth-provider";
 import NavBar from "@/components/custom/NavBar";
 import ReactQueryProvider from "@/app/hooks/ReactQueryProvider";
 import React from "react";
-import { Toaster } from "@/components/ui/sonner";
+import {Toaster} from "@/components/ui/sonner";
+import NavHeader from "@/components/custom/NavHeader";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -26,14 +27,14 @@ export default function RootLayout({
         <ReactQueryProvider>
             <AmplifyConfigProvider>
                 <AuthProvider>
-                    {/*<NavBar />*/}
-                    <div>
+                    <NavHeader/>
+                    <div className={"mt-24"}>
                         {children}
                     </div>
                 </AuthProvider>
             </AmplifyConfigProvider>
         </ReactQueryProvider>
-        <Toaster position="top-right" />
+        <Toaster position="top-right"/>
         </body>
         </html>
     );

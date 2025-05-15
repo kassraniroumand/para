@@ -13,18 +13,18 @@ export default function DashboardLayout({
         {
             id: 'overview',
             title: 'Overview',
-            href: '/auth/pages',
+            href: '/auth/admin/pages',
             exact: true,
         },
         {
             id: 'portfolio',
             title: 'portfolio',
-            href: '/auth/pages/portfolio-page',
+            href: '/auth/admin/pages/portfolio-page',
         },
         {
             id: 'home',
             title: 'home',
-            href: '/auth/pages/home-page',
+            href: '/auth/admin/pages/home-page',
         }
     ];
 

@@ -4,6 +4,7 @@ import {useMutation, useSuspenseQuery} from "@tanstack/react-query";
 import {apiClient} from "@/app/utils/api-client";
 import {getPortfolioPage} from "@/app/utils/serverAction";
 import {PortfolioPage, PortfolioParameter} from "@/app/types";
+import {getPortfolioPageClient} from "@/app/utils/clientAction";
 
 
 export async function createPortfolioPage(data: PortfolioPage) {
@@ -18,7 +19,7 @@ export async function createPortfolioPage(data: PortfolioPage) {
 // Function to extract query options
 export const portfolioQueryOptions = ({ isFeatured }: PortfolioParameter = {}) => ({
     queryKey: ['portfolioPage', isFeatured] as const,
-    queryFn: () => getPortfolioPage({ isFeatured }),
+    queryFn: () => getPortfolioPageClient({ isFeatured }),
     retry: 1,
     refetchOnWindowFocus: false,
 });
