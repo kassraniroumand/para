@@ -38,7 +38,7 @@ export default function NavHeader() {
             <div className="container mx-auto px-6">
                 <div className="flex justify-between items-center h-16">
 
-                    <h1 className="text-xl font-bold text-white">Paradox Street</h1>
+                    <h1 className="text-xl font-bold text-white">Web London Hub</h1>
                     <div className="w-10"></div> {/* Spacer for balance */}
                     <HamburgerMenu />
                 </div>
