@@ -43,7 +43,7 @@ export default function Header() {
         <main className="flex flex-col items-center justify-center mt-20 relative">
             {/* Hero Section */}
             <motion.section
-                className="h-[60svh] flex flex-col items-center justify-center relative z-10 text-center px-4"
+                className="h-[80svh] sm:h-[60svh] flex flex-col items-center justify-center relative z-10 text-center px-4"
                 initial="hidden"
                 animate="visible"
                 variants={containerVariants}
