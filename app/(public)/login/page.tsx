@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/auth/auth-provider";
@@ -36,8 +36,18 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { login } = useAuth();
-  const { user, isAdmin, isLoading } = useAuth();
+  const { user, isAdmin, isLoading, login, isAuthenticated } = useAuth();
+
+   useEffect(()=>{
+    if (!isLoading && isAuthenticated) {
+      // Redirect to the appropriate page based on user role
+      if (isAdmin) {
+        router.push("/auth/admin");
+      } else {
+        router.push("/auth/dashboard");
+      }
+    }
+   }, [isAuthenticated, user, isLoading]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,10 +63,9 @@ export default function LoginPage() {
 
     try {
       const result = await login(values.email, values.password);
-
+      console.log("Login result:", result);
 
       if (result) {
-        // Redirect to dashboard or home page
         router.push(isAdmin ? "/auth/admin" : "/login");
       } else {
         setError("Invalid email or password. Please try again.");

@@ -11,44 +11,59 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link";
+import {useAuth} from "@/app/auth/auth-provider";
 
-const data = {
-    versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-    navMain: [
-        {
-            title: "Home",
-            url: "/auth/pages",
-            items: []
-        },
-        {
-            title: "Pages",
-            url: "#",
-            items: [
-                {
-                    title: "Pages",
-                    url: "/auth/pages"
-                },
-            ]
-        },
-        {
-            title: "Blogs",
-            url: "/auth/blog",
-            items: [
-                {
-                    title: "list",
-                    url: "/auth/blogs",
-                },
-                {
-                    title: "Create",
-                    url: "/auth/blogs/create",
-                },
-            ]
-        },
 
-    ],
-}
 
 export function AppSidebar() {
+    const {isAdmin} = useAuth();
+    const data = isAdmin ?
+        {
+        versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+
+        navMain: [
+            {
+                title: "Home",
+                url: "/auth/admin/pages",
+                items: []
+            },
+            {
+                title: "Pages",
+                url: "#",
+                items: [
+                    {
+                        title: "Pages",
+                        url: "/auth/admin/pages"
+                    },
+                ]
+            },
+            {
+                title: "Blogs",
+                url: "/auth/blog",
+                items: [
+                    {
+                        title: "list",
+                        url: "/auth/admin/blogs",
+                    },
+                    {
+                        title: "Create",
+                        url: "/auth/admin/blogs/create",
+                    },
+                ]
+            },
+
+        ],
+    }
+        :
+        {
+            navMain: [
+                {
+                    title: "Home",
+                    url: "/auth",
+                    items: []
+                }
+                ]
+        }
     return (
         <Sidebar>
             <SidebarContent>

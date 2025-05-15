@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { fetchAuthSession, signOut, getCurrentUser } from "aws-amplify/auth";
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
+import { signIn } from 'aws-amplify/auth';
 
 // Cookie names
 const ACCESS_TOKEN_COOKIE = 'amplify-accessToken';
@@ -176,9 +177,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Login function
   const login = async (username: string, password: string): Promise<boolean> => {
-    // This would be implemented with Amplify signIn
-    // For now we just refresh tokens and get user
-    return refreshTokens();
+    try {
+      await signIn({ username, password });
+      return await refreshTokens();
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err instanceof Error ? err.message : 'Login failed');
+      return false;
+    }
   };
 
   // Logout function
@@ -245,6 +251,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
   }, []);
 
+  console.log('AuthProvider user:', user);
   const contextValue: AuthContextType = {
     user,
     isLoading,

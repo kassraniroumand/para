@@ -1,5 +1,3 @@
-'use server'
-
 import {apiClient, publicApiClient} from "@/app/utils/api-client";
 import {
     Category,
@@ -36,28 +34,28 @@ export async function getPortfolioPage({isFeatured}: PortfolioParameter):  Promi
 // --------------------
 // Posts
 // --------------------
-export const getPublishedBlogs = async (): Promise<Post[]> => {
+export const getPublishedBlogsClient = async (): Promise<Post[]> => {
     const response = await apiClientBlog.get("/posts_published");
     return response.data;
 };
 
-export const getAllPosts = async (): Promise<Post[]> => {
+export const getAllPostsClient = async (): Promise<Post[]> => {
     const response = await apiClientBlog.get("/posts");
     return response.data;
 };
 
-export const getPostById = async (id: number): Promise<Post> => {
+export const getPostByIdClient = async (id: number): Promise<Post> => {
     const response = await apiClientBlog.get(`/posts/${id}`);
     return response.data;
 };
 
 
-export const createPost = async (post: postInputType): Promise<Post> => {
+export const createPostClient = async (post: postInputType): Promise<Post> => {
     const response = await apiClientBlog.post("/posts", post);
     return response.data;
 };
 
-export const updatePost = async ({
+export const updatePostClient = async ({
                                      id,
                                      data,
                                  }: {
@@ -68,7 +66,7 @@ export const updatePost = async ({
     return response.data;
 };
 
-export const deletePost = async (id: number): Promise<Post> => {
+export const deletePostClient = async (id: number): Promise<Post> => {
     const response = await apiClientBlog.delete(`/posts/${id}`);
     return response.data;
 };
@@ -76,12 +74,12 @@ export const deletePost = async (id: number): Promise<Post> => {
 // --------------------
 // Tags
 // --------------------
-export const getTags = async (): Promise<Tag[]> => {
+export const getTagsClient = async (): Promise<Tag[]> => {
     const response = await apiClientBlog.get("/tags");
     return response.data;
 };
 
-export const createTag = async (tag: CreateTagPayload): Promise<Tag[]> => {
+export const createTagClient = async (tag: CreateTagPayload): Promise<Tag[]> => {
     const response = await apiClientBlog.post("/tags", tag);
     return response.data;
 };
@@ -89,12 +87,12 @@ export const createTag = async (tag: CreateTagPayload): Promise<Tag[]> => {
 // --------------------
 // Categories
 // --------------------
-export const getCategories = async (): Promise<Category[]> => {
+export const getCategoriesClient = async (): Promise<Category[]> => {
     const response = await apiClientBlog.get("/categories");
     return response.data;
 };
 
-export const createCategory = async (
+export const createCategoryClient = async (
     categories: CreateCategoryPayload
 ): Promise<CategoryFormValues> => {
     const response = await apiClientBlog.post("/categories", categories);
@@ -105,12 +103,12 @@ export const createCategory = async (
 // --------------------
 // SEO Keywords
 // --------------------
-export const getSeoKeywords = async (): Promise<SeoKeyword[]> => {
+export const getSeoKeywordsClient = async (): Promise<SeoKeyword[]> => {
     const response = await apiClientBlog.get("/seo-keywords");
     return response.data;
 };
 
-export const createSeoKeyword = async (
+export const createSeoKeywordClient = async (
     keyword: CreateSeoKeywordPayload
 ): Promise<SeoKeywordFormValues> => {
     const response = await apiClientBlog.post("/seo-keywords", keyword);
