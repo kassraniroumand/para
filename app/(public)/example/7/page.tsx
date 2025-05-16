@@ -21,7 +21,7 @@ function LeftSection({ title }: LeftSectionProps) {
         <>
             <div className="hidden h-full sm:flex flex-col gap-4">
                 {title.split(" ").map(word => (
-                    <h3 className="font-serif text-9xl font-medium">{word}</h3>
+                    <h3 className="font-serif sm:text-6xl md:9xl font-medium">{word}</h3>
                 ))}
             </div>
             <div className="flex h-full sm:hidden flex-col gap-4">

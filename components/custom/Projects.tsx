@@ -23,9 +23,9 @@ const ProjectItem = ({ item }) => {
                     src={item.image}
                 />
             </div>
-            <div>
-                <h2 className="text-2xl font-bold py-4">{item.title}</h2>
-                <p className="text-gray-600 text-lg font-medium">{item.description[0]}</p>
+            <div className={"flex flex-col mt-4 gap-4"}>
+                <h2 className="text-2xl font-bold text-center">{item.title}</h2>
+                <p className="text-gray-600 text-lg font-medium text-center">{item.description[0]}</p>
             </div>
         </motion.div>
     );
