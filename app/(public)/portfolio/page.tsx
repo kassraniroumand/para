@@ -7,7 +7,7 @@ import {useGetPortfolioPage} from "@/app/hooks/usePortfolioPage";
 export default function CenteredScrollContent() {
     const containerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
-    
+
 
     const {data: portfolios} = useGetPortfolioPage();
     const contents = portfolios.portfolioPage.sections.sites.map((item) => ({
@@ -57,7 +57,11 @@ export default function CenteredScrollContent() {
                                             sizes="(max-width: 768px) 100vw, 66vw"
                                             src={contents[activeIndex].imageUrl}
                                             alt={contents[activeIndex].title}
+<<<<<<< HEAD
                                             objectFit={"cover"}
+=======
+                                            objectFit={"contain"}
+>>>>>>> 318dece (image update)
                                         />
                                     </div>
 
