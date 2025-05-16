@@ -14,11 +14,12 @@ const ProjectItem = ({ item }) => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-            <div className="relative w-full aspect-square overflow-hidden rounded-xl">
+            <div className="relative w-full aspect-video overflow-hidden rounded-xl">
                 <Image
                     alt={item.title}
                     sizes="100"
                     fill
+                    objectFit={"contain"}
                     src={item.image}
                 />
             </div>

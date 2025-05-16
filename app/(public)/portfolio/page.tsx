@@ -51,13 +51,13 @@ export default function CenteredScrollContent() {
                             <div className="w-full h-full flex items-center justify-center">
                                 <div className="w-full overflow-hidden rounded-xl flex sm:flex-row flex-col">
                                     {/* Image container - doesn't fade */}
-                                    <div className="relative sm:w-[50svw] aspect-square w-full overflow-hidden">
+                                    <div className="relative sm:w-[50svw] aspect-video w-full overflow-hidden">
                                         <Image
                                             fill={true}
                                             sizes="(max-width: 768px) 100vw, 66vw"
                                             src={contents[activeIndex].imageUrl}
                                             alt={contents[activeIndex].title}
-                                            className="object-cover"
+                                            objectFit={"cover"}
                                         />
                                     </div>
 
